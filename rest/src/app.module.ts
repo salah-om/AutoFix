@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './user/user.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -12,8 +13,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: 'root',
       database: 'autofix',
-      entities: [],
-      synchronize: true,
+      entities: [User],
+      synchronize: false, //db alr exists idw duplicate table
     }),
     UserModule
   ],
