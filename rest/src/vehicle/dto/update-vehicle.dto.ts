@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsEmail } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 export class UpdateVehicleDto {
   @IsOptional()
   @IsString()  
@@ -11,4 +11,8 @@ export class UpdateVehicleDto {
   @IsOptional()
   @IsString()
   year?: string;
+
+  @IsOptional()
+  @IsString()
+  imgurl?: string;
 }

@@ -4,9 +4,8 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
-import { VehicleController } from './vehicle/vehicle.controller';
-import { VehicleService } from './vehicle/vehicle.service';
 import { VehicleModule } from './vehicle/vehicle.module';
+import { Vehicle } from './vehicle/vehicle.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -16,13 +15,13 @@ import { VehicleModule } from './vehicle/vehicle.module';
       username: 'root',
       password: 'root',
       database: 'autofix',
-      entities: [User],
-      synchronize: false, //db alr exists idw duplicate table
+      entities: [User, Vehicle],
+      synchronize: true, 
     }),
     UserModule,
     VehicleModule
   ],
-  controllers: [AppController, VehicleController],
-  providers: [AppService, VehicleService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

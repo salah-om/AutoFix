@@ -13,4 +13,7 @@ export class Vehicle {
 
   @Column()
   year: string;
+
+  @Column()
+  imgurl: string;
 }
