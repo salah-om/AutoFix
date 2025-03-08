@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
+import { VehicleController } from './vehicle/vehicle.controller';
+import { VehicleService } from './vehicle/vehicle.service';
+import { VehicleModule } from './vehicle/vehicle.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -16,9 +19,10 @@ import { User } from './user/user.entity';
       entities: [User],
       synchronize: false, //db alr exists idw duplicate table
     }),
-    UserModule
+    UserModule,
+    VehicleModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, VehicleController],
+  providers: [AppService, VehicleService],
 })
 export class AppModule {}
