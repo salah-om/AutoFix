@@ -6,10 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { Vehicle } from './vehicle/vehicle.entity';
-import { FixController } from './fix/fix.controller';
-import { FixService } from './fix/fix.service';
 import { FixModule } from './fix/fix.module';
 import { Fix } from './fix/fix.entity';
+import { ComplaintModule } from './complaint/complaint.module';
+import { Complaint } from './complaint/complaint.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -19,12 +19,13 @@ import { Fix } from './fix/fix.entity';
       username: 'root',
       password: 'root',
       database: 'autofix',
-      entities: [User, Vehicle, Fix],
+      entities: [User, Vehicle, Fix, Complaint],
       synchronize: true, 
     }),
     UserModule,
     VehicleModule,
-    FixModule
+    FixModule,
+    ComplaintModule
   ],
   controllers: [AppController],
   providers: [AppService],
