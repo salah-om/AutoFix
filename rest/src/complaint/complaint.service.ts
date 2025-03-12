@@ -19,7 +19,6 @@ export class ComplaintService {
       async create(createComplaintDto: CreateComplaintDto): Promise<Complaint> {
         const { user_id, vehicle_id, issue, description, cost } = createComplaintDto;
       
-        // Fetch the user and vehicle entities using their IDs
         const user = await this.userService.findOne(user_id);
         const vehicle = await this.vehicleService.findOne(vehicle_id);
       
@@ -27,7 +26,6 @@ export class ComplaintService {
           throw new Error('User or Vehicle not found!');
         }
       
-        // Create the Complaint entity and associate the relations
         const complaint = this.complaintsRepository.create({
           user,
           vehicle,
@@ -36,7 +34,6 @@ export class ComplaintService {
           cost,
         });
       
-        // Save the entity and return it
         return await this.complaintsRepository.save(complaint);
       }
       
