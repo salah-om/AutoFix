@@ -10,6 +10,8 @@ import { FixModule } from './fix/fix.module';
 import { Fix } from './fix/fix.entity';
 import { ComplaintModule } from './complaint/complaint.module';
 import { Complaint } from './complaint/complaint.entity';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -22,7 +24,9 @@ import { Complaint } from './complaint/complaint.entity';
       entities: [User, Vehicle, Fix, Complaint],
       synchronize: true, 
     }),
+    ConfigModule.forRoot({isGlobal: true}),
     UserModule,
+    AuthModule,
     VehicleModule,
     FixModule,
     ComplaintModule
