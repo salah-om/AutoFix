@@ -15,6 +15,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  role: string;
+
   @OneToMany(() => Complaint, (complaint) => complaint.user, { cascade: true })
   complaints: Complaint[];
 }
