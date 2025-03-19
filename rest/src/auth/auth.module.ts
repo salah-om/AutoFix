@@ -11,21 +11,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User]), // Register User entity for use with TypeOrm
-        UserModule, // Import UsersModule if needed for user-related logic
-        PassportModule.register({ defaultStrategy: 'jwt' }), // Register Passport JWT strategy
+        TypeOrmModule.forFeature([User]), 
+        UserModule, 
+        PassportModule.register({ defaultStrategy: 'jwt' }), 
         JwtModule.registerAsync({
-            imports: [ConfigModule], // Ensure ConfigModule is imported for async factory
-            inject: [ConfigService], // Inject ConfigService to access environment variables
+            imports: [ConfigModule], 
+            inject: [ConfigService], 
             useFactory: async (configService: ConfigService) => ({
-                secret: configService.get<string>('JWT_SECRET'), // Fetch the secret key from environment
-                signOptions: { expiresIn: '1h' }, // Set expiration time for JWT
+                secret: configService.get<string>('JWT_SECRET'), 
+                signOptions: { expiresIn: '1h' }, 
             }),
         }),
-        ConfigModule, // Import ConfigModule to load environment variables
+        ConfigModule, 
     ],
-    providers: [AuthService, JwtStrategy], // Register JwtStrategy and AuthService
-    controllers: [AuthController], // Register AuthController
-    exports: [AuthService, JwtModule, PassportModule], // Export services for use in other modules
+    providers: [AuthService, JwtStrategy], 
+    controllers: [AuthController], 
+    exports: [AuthService, JwtModule, PassportModule], 
 })
 export class AuthModule { }
