@@ -1,0 +1,12 @@
+body, .cont {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.cont {
+    background-image: url('/dcfbg.jpg');
+    background-size: cover; 
+    background-position: center; 
+    height: 100vh;
+}
