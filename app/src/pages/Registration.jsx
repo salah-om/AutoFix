@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { getAll, authenticate, signUp } from "../services/UserService";
-import {setToken} from "../utility/Utility";
+import { Form, Button, Container, Card, Alert } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { getAll, signUp } from "../services/UserService";
+import { setToken } from "../utility/Utility";
 
 const Registration = () => {
     const [formData, setFormData] = useState({
@@ -24,38 +26,68 @@ const Registration = () => {
                 formData.password
             );
             setToken(result.data.token);
-            const users = await getAll();
-            console.log(users);
+            await getAll();
             
             alert("Registration successful!");
         } catch (err) {
-            console.log(err);
             setError("Registration failed. Please try again.");
         }
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center vh-100">
-            <div className="card p-4 shadow-lg" style={{ width: "400px", background: "#000", color: "#fff" }}>
-                <h2 className="text-center mb-4">Register</h2>
-                {error && <div className="alert alert-danger">{error}</div>}
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label className="form-label">Username</label>
-                        <input type="text" name="username" className="form-control" value={formData.username} onChange={handleChange} required />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Email</label>
-                        <input type="text" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label">Password</label>
-                        <input type="password" name="password" className="form-control" value={formData.password} onChange={handleChange} required />
-                    </div>
-                    <button type="submit" className="btn btn-light w-100">Sign Up</button>
-                </form>
-            </div>
-        </div>
+        <Container className="d-flex justify-content-center align-items-center vh-100">
+            <Card className="p-4 shadow-lg border-0" style={{ width: "400px", borderRadius: "10px" }}>
+                <Card.Body>
+                    <h2 className="text-center mb-4">Register</h2>
+                    {error && <Alert variant="danger">{error}</Alert>}
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control 
+                                type="text" 
+                                name="username" 
+                                value={formData.username} 
+                                onChange={handleChange} 
+                                required 
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control 
+                                type="email" 
+                                name="email" 
+                                value={formData.email} 
+                                onChange={handleChange} 
+                                required 
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control 
+                                type="password" 
+                                name="password" 
+                                value={formData.password} 
+                                onChange={handleChange} 
+                                required 
+                            />
+                        </Form.Group>
+
+                        <div className="d-grid">
+                            <Button variant="primary" type="submit">Sign Up</Button>
+                        </div>
+
+                        <p className="text-center mt-3">
+                            Already have an account?{" "}
+                            <Link to="/" className="text-primary fw-bold text-decoration-none">
+                                Login
+                            </Link>
+                        </p>
+                    </Form>
+                </Card.Body>
+            </Card>
+        </Container>
     );
 };
 
