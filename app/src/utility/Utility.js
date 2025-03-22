@@ -16,3 +16,13 @@ export const getTokenBearer = () => {
     const token = getToken();
     return token ? `Bearer ${token}` : "";
 };
+
+export const getRole = () => localStorage.getItem("userRole") || "";
+
+export const setRole = (role) => {
+    if(role){
+        localStorage.setItem("userRole", role);
+    } else {
+        localStorage.removeItem("userRole");
+    }
+}
