@@ -12,6 +12,7 @@ import { ComplaintModule } from './complaint/complaint.module';
 import { Complaint } from './complaint/complaint.entity';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { DashModule } from './dashboard/dashboard.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -29,7 +30,8 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     VehicleModule,
     FixModule,
-    ComplaintModule
+    ComplaintModule,
+    DashModule
   ],
   controllers: [AppController],
   providers: [AppService],

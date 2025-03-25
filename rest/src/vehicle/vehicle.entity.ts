@@ -15,7 +15,7 @@ export class Vehicle {
   @Column()
   year: string;
 
-  @Column()
+  @Column({ default: '' })
   imgurl: string;
 
   @OneToMany(() => Complaint, (complaint) => complaint.vehicle, { cascade: true })
