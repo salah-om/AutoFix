@@ -38,6 +38,21 @@ body, .cont {
   flex-direction: column;
 }
 
+.sidebarM {
+  width: 250px;
+  height: 100vh;
+  background-color: #d57c00;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: width 0.3s ease-in-out;
+  overflow: hidden;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
 /* Sidebar header */
 .sidebar-header {
   display: flex;
@@ -45,6 +60,7 @@ body, .cont {
   padding: 15px;
   gap: 10px;
 }
+
 
 /* Welcome Admin text */
 .menu-title {
@@ -72,8 +88,29 @@ body, .cont {
   padding-top: 20px;
 }
 
+/* Sidebar menu */
+.sidebarM nav {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
 /* Menu items */
 .menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+/* Menu items */
+.menuM-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -88,13 +125,27 @@ body, .cont {
   background: #34495e;
 }
 
+.menuM-item:hover {
+  background: #a56300;
+}
+
 /* Keep animation working */
 .sidebar.closed {
   width: 80px;
 }
 
+/* Keep animation working */
+.sidebarM.closed {
+  width: 80px;
+}
+
 .sidebar.closed .menu-title,
 .sidebar.closed .menu-item span {
+  display: none;
+}
+
+.sidebarM .closed .menu-title,
+.sidebarM.closed .menuM-item span {
   display: none;
 }
 
