@@ -103,7 +103,6 @@ body, .cont {
   justify-content: center;
   flex-wrap: wrap;
   padding: 20px;
-  background-color: #2b2b2b;
 }
 
 .card-container {
@@ -112,9 +111,21 @@ body, .cont {
   justify-content: center;
   gap: 20px;
   padding: 20px;
+  margin-left: 14%;
 }
 
 .card {
+  width: 250px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  text-align: center;
+  color: rgb(0, 0, 0);
+}
+
+.cardsdash {
   width: 250px;
   background-color: #2c3e50;
   border-radius: 20px;
@@ -122,11 +133,11 @@ body, .cont {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   padding: 20px;
   text-align: center;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .card img {
-  width: 50px;
+  width: 100px;
   margin-bottom: 10px;
 }
 
