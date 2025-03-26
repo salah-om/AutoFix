@@ -3,6 +3,7 @@ import { Form, Button, Container, Card } from "react-bootstrap";
 import { authenticate } from "../services/UserService"; 
 import { setRole, setToken } from "../utility/Utility"; 
 import { Link, useNavigate } from "react-router-dom";
+import '../styles/index.css';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -38,6 +39,7 @@ const Login = () => {
     };
 
     return (
+        <div className ='cont'>
         <Container className="d-flex justify-content-center align-items-center vh-100">
             <Card className="p-4 shadow-lg border-0" style={{ width: "400px", borderRadius: "10px" }}>
                 <Card.Body>
@@ -80,6 +82,7 @@ const Login = () => {
                 </Card.Body>
             </Card>
         </Container>
+        </div>
     );
 };
 
