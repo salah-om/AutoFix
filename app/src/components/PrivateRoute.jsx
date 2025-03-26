@@ -4,7 +4,7 @@ import { getRole } from "../utility/Utility";
 
 const PrivateRoute = ({ allowedRoles }) => {
     const role = getRole();
-    return allowedRoles.includes(role) ? <Outlet /> : <Navigate to="/" />;
+    return allowedRoles.includes(role) ? <Outlet /> : <Navigate to="/unauth" />;
 };
 
 export default PrivateRoute;
