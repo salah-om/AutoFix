@@ -1,45 +1,84 @@
-import axios from "axios";
-import { useState } from "react";
+import http from "../http-common";
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
+const UsersForm = () => {
 
-const UsersForm = (fetchUsers) => {
-
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [user,setUser]= useState({
-         firstName:'',
-         lastName:'',
-         isActive:false
+         username:'',
+         email:'',
+         role:''
         }
     )
 
-    const handleChange = (name, value) =>{
-        setUser({...user,[name]:value});
-    }
+    useEffect(() => {
+        if (id) {
+            fetchUserById(id);
+        }
+    }, [id]);
 
-    const saveUser = async(event) =>{
+    const fetchUserById = async (userId) => {
+        try {
+            const response = await http.get(`/users/${userId}`);
+            setUser(response.data); 
+        } catch (e) {
+            console.error("Error fetching user data:", e);
+        }
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setUser((prevUser) => ({ ...prevUser, [name]: value }));
+    };
+    
+
+    const saveUser = async (event) => {
         event.preventDefault();
-        const URL = 'http://localhost:3000/users';
-        const result = await axios.post(URL, user);
-        console.log(result);
-        fetchUsers();
-    }
+
+        try {
+            if (id) {
+            await http.patch(`/users/${id}`, user);
+            }
+
+            navigate('/users');
+        } catch(error) {
+            console.error("Error updating user:", error);
+        }
+    };
 
 
     return (
         <>
-            <form>
+            <nav><Link to ='/users'>Back</Link></nav>
+            <form onSubmit={saveUser}>
                 <div className="form-group">
-                    <label >First Name</label>
-                    <input onChange={(event) => handleChange('firstName', event.target.value)} type="text" className="form-control" placeholder="First Name" />
+                    <label style={{color: "white"}}> Username</label>
+                    <input onChange={(event) => handleChange('username', event.target.value)} type="text" className="form-control" placeholder="Username" name ="username" value={user.username}/>
                 </div>
                 <div className="form-group">
-                    <label >Last Name</label>
-                    <input onChange={(event) => handleChange('lastName', event.target.value)} type="text" className="form-control" placeholder="Last Name" />
+                    <label style={{color: "white"}}>Email</label>
+                    <input onChange={(event) => handleChange('email', event.target.value)} type="text" className="form-control" placeholder="Email" name ="email" value={user.email}/>
                 </div>
+
                 <div className="form-check">
-                    <input onChange={(event) => handleChange('isActive', event.target.checked)} type="checkbox" className="form-check-input" />
-                    <label className="form-check-label" >is Active</label>
+                    <label style={{color: "white"}}>Role</label>
+                    <select 
+                        id="role" 
+                        name="role" 
+                        className="form-control" 
+                        value={user.role} 
+                        onChange={handleChange} 
+                        required
+                    >
+
+                        {["Admin", "Mechanic", "Visitor"].map((role) => (
+                            <option key={role} value={role}>{role}</option>
+                        ))}
+                    </select>
                 </div>
-                <button type="submit" className="btn btn-primary" onClick={(event)=>saveUser(event)}>Submit</button>
+                <button type="submit" className="btn btn-primary">Submit</button>
             </form>
         </>
     )
