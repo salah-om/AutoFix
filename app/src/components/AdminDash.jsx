@@ -23,10 +23,9 @@ const AdminDash = () => {
 
     return ( 
         <>
-        <RespSidebar />
         <div className="admin-dashboard">
             <div className="card-container">
-                <div className="card">
+                <div className="cardsdash">
                     <img src="/images/users-icon.png" alt="Users" />
                     <div className="card-content">
                         <h3>Number of Users:</h3>
@@ -34,7 +33,7 @@ const AdminDash = () => {
                     </div>
                 </div>
 
-                <div className="card">
+                <div className="cardsdash">
                     <img src="/images/mechanics.png" alt="Mechanics" />
                     <div className="card-content">
                         <h3>Number of Mechanics:</h3>
@@ -42,7 +41,7 @@ const AdminDash = () => {
                     </div>
                 </div>
 
-                <div className="card">
+                <div className="cardsdash">
                     <img src="/images/admins.png" alt="Admins" />
                     <div className="card-content">
                         <h3>Number of Admins:</h3>
@@ -50,7 +49,7 @@ const AdminDash = () => {
                     </div>
                 </div>
 
-                <div className="card">
+                <div className="cardsdash">
                     <img src="/images/vehicles.png" alt="Vehicles" />
                     <div className="card-content">
                         <h3>Number of Vehicles:</h3>
@@ -58,7 +57,7 @@ const AdminDash = () => {
                     </div>
                 </div>
 
-                <div className="card">
+                <div className="cardsdash">
                     <img src="/images/complaints.png" alt="Complaints" />
                     <div className="card-content">
                         <h3>Number of Complaints:</h3>
