@@ -1,6 +1,10 @@
+import MechSidebar from "../components/MechSidebar";
+
 const Mechanic = () => {
     return (
-        <h1>Hello Bob the Builder!</h1>
+        <>
+        <MechSidebar />
+        </>
       );
 }
  

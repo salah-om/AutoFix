@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaBars, FaUser, FaCar, FaPlus, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
+import { FaBars, FaAngry, FaHammer, FaSignOutAlt, FaTachometerAlt, FaHeadset } from "react-icons/fa";
 import "../styles/index.css"; 
 
 const MechSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
-    <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
+    <div className={`sidebarM ${isOpen ? "open" : "closed"}`}>
       {/* Sidebar Header with Toggle Button */}
       <div className="sidebar-header">
         <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
@@ -18,19 +18,19 @@ const MechSidebar = () => {
 
       {/* Sidebar Menu */}
       <nav>
-        <NavLink to="/mechanic" className="menu-item">
+        <NavLink to="/mechanic" className="menuM-item">
           <FaTachometerAlt /> <span>Dashboard</span>
         </NavLink>
-        <NavLink to="/mechanic/fixes" className="menu-item">
-          <FaUser /> <span>Fixes</span>
+        <NavLink to="/mechanic/fixes" className="menuM-item">
+          <FaHammer /> <span>Fixes</span>
         </NavLink>
-        <NavLink to="/mechanic/complaints" className="menu-item">
-          <FaCar /> <span>Complaints</span>
+        <NavLink to="/mechanic/complaints" className="menuM-item">
+          <FaAngry /> <span>Complaints</span>
         </NavLink>
-        <NavLink to="/mechanic/chat" className="menu-item">
-          <FaPlus /> <span>Chat</span>
+        <NavLink to="/mechanic/chat" className="menuM-item">
+          <FaHeadset /> <span>Chat</span>
         </NavLink>
-        <NavLink to="/" className="menu-item">
+        <NavLink to="/" className="menuM-item">
           <FaSignOutAlt /> <span>Sign Out</span>
         </NavLink>
       </nav>
