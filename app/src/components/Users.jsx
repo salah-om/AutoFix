@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import UsersForm from "./UsersForm";
+import RespSidebar from "./RespSidebar";
+import http from "../http-common";
 
 
 const Users = () => {
@@ -8,60 +8,74 @@ const Users = () => {
     
     useEffect(()=>{
         fetchUsers();
-    }, users);
+    }, []);
 
     const fetchUsers = async () => {
         try {
-            const URL = 'http://localhost:3000/users';
-            const response = await axios.get(URL);
-            console.log(response.data);
+            const response = await http.get("/users");
             setUsers(response?.data);
         } catch (e) {
             alert('Route not found'+e);
-        }finally{
-            
         }
     }
 
-    const convertColor = (status) => {
-        if(status === "Visitor"){
-            return "green";
-        } else if (status === "Mechanic"){
-            return "gray";
+    const handleEdit = (id) => {
+        window.location.href = `/users/edit-form/${id}`;
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await http.delete(`/users/${id}`);
+            setUsers(users.filter(user => user.id !== id)); 
+        } catch (e) {
+            alert('Error deleting user: ' + e);
         }
+    };
+
+    const convertColor = (role) => {
+        if(role === "Visitor") return "green";
+        if (role === "Mechanic") return "orange";
         return "red";
     }
 
     return (
         <>
-        <div className="container">
-        <button style={{backgroundColor: 'green'}}><span style={{color: '#FFFFFF'}}>+</span></button>
-            <table className="table">
+        <RespSidebar />
+        <div className="container" style={{maxWidth: "965px"}}>
+            <table className="table table-dark table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
                         <th>Email</th>
-                        <th>Status</th>
+                        <th>Role</th>
+                        <th>Edit/Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         users.map((user)=>{
                             return(
-                                <tr>
+                                <tr key={user.id}>
+                                    
                                     <td>{user?.id}</td>
                                     <td>{user?.username}</td>
                                     <td>{user?.email}</td>
-                                    <td style={{color: convertColor(user?.status)}}>{user?.status}</td>
+                                    <td style={{color: convertColor(user?.role)}}>{user?.role}</td>
+                                    <td> 
+                                        <button onClick={() => handleEdit(user.id)} className="btn btn-primary btn-sm">
+                                        <i className="bx bxs-edit"></i>
+                                        </button>
+                                        <button onClick={() => handleDelete(user.id)} className="btn btn-danger btn-sm mx-2">
+                                        <i className="bx bxs-trash"></i>
+                                        </button>
+                                    </td>
                                 </tr>
                             );
                         })
                     }
                 </tbody>
-
             </table>
-            <UsersForm fetchUser={fetchUsers} />
             </div>
         </>
     )
