@@ -1,6 +1,14 @@
+import AdminDash from "../components/AdminDash";
+import RespSidebar from "../components/RespSidebar";
+
 const Admin = () => {
+  
     return (
-        <h1>Hello Mr Robot.</h1>
+      <>
+        <RespSidebar />
+        <AdminDash />
+      </>
+      
       );
 }
  
