@@ -48,6 +48,19 @@ function App() {
           <Route path="/admin/vehicles/add" element={<VehiclesForm />} />
           </Route>
 
+          <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
+          <Route path="/mechanic" element={<Mechanic />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
+          <Route path="/mechanic/fixes" element={<Mechanic />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
+          <Route path="/mechanic/complaints" element={<Mechanic />} />
+          </Route>
+
+
+
+
         </Routes>
       </Container>
     </Router>
