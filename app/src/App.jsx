@@ -33,19 +33,19 @@ function App() {
           </Route>
 
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
-          <Route path="/users" element={<Users />} />
+          <Route path="/admin/users" element={<Users />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
-          <Route path="/users/edit-form/:id" element={<UsersForm />} />
+          <Route path="/admin/users/edit-form/:id" element={<UsersForm />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
-          <Route path="/vehicles" element={<Vehicles />} />
+          <Route path="/admin/vehicles" element={<Vehicles />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
-          <Route path="/vehicles/edit-form/:id" element={<VehiclesForm />} />
+          <Route path="/admin/vehicles/edit-form/:id" element={<VehiclesForm />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
-          <Route path="/vehicles/add" element={<VehiclesForm />} />
+          <Route path="/admin/vehicles/add" element={<VehiclesForm />} />
           </Route>
 
         </Routes>

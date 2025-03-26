@@ -56,7 +56,7 @@ const VehiclesForm = () => {
 
     return (
         <>
-            <nav><Link to="/vehicles">Back</Link></nav>
+            <nav><Link to="/admin/vehicles">Back</Link></nav>
             <h2 style={{ color: "white" }}>{id ? "Edit Vehicle" : "Add Vehicle"}</h2>
             <form onSubmit={saveVehicle}>
                 <div className="form-group">

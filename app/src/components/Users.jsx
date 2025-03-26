@@ -20,7 +20,7 @@ const Users = () => {
     }
 
     const handleEdit = (id) => {
-        window.location.href = `/users/edit-form/${id}`;
+        window.location.href = `/admin/users/edit-form/${id}`;
     };
 
     const handleDelete = async (id) => {

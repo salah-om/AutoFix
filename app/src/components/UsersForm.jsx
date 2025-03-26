@@ -42,7 +42,7 @@ const UsersForm = () => {
             await http.patch(`/users/${id}`, user);
             }
 
-            navigate('/users');
+            navigate('/admin/users');
         } catch(error) {
             console.error("Error updating user:", error);
         }
@@ -51,7 +51,7 @@ const UsersForm = () => {
 
     return (
         <>
-            <nav><Link to ='/users'>Back</Link></nav>
+            <nav><Link to ='/admin/users'>Back</Link></nav>
             <form onSubmit={saveUser}>
                 <div className="form-group">
                     <label style={{color: "white"}}> Username</label>

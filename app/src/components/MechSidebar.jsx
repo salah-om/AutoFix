@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaBars, FaUser, FaCar, FaPlus, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
 import "../styles/index.css"; 
 
-const RespSidebar = () => {
+const MechSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
@@ -13,22 +13,22 @@ const RespSidebar = () => {
         <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
           <FaBars />
         </button>
-        {isOpen && <span className="menu-title">Welcome, Admin</span>}
+        {isOpen && <span className="menu-title">Welcome, Mechanics</span>}
       </div>
 
       {/* Sidebar Menu */}
       <nav>
-        <NavLink to="/admin" className="menu-item">
+        <NavLink to="/mechanic" className="menu-item">
           <FaTachometerAlt /> <span>Dashboard</span>
         </NavLink>
-        <NavLink to="/admin/users" className="menu-item">
-          <FaUser /> <span>Users</span>
+        <NavLink to="/mechanic/fixes" className="menu-item">
+          <FaUser /> <span>Fixes</span>
         </NavLink>
-        <NavLink to="/admin/vehicles" className="menu-item">
-          <FaCar /> <span>Vehicles</span>
+        <NavLink to="/mechanic/complaints" className="menu-item">
+          <FaCar /> <span>Complaints</span>
         </NavLink>
-        <NavLink to="/admin/vehicles/add" className="menu-item">
-          <FaPlus /> <span>Add Vehicle</span>
+        <NavLink to="/mechanic/chat" className="menu-item">
+          <FaPlus /> <span>Chat</span>
         </NavLink>
         <NavLink to="/" className="menu-item">
           <FaSignOutAlt /> <span>Sign Out</span>
@@ -38,4 +38,4 @@ const RespSidebar = () => {
   );
 };
 
-export default RespSidebar;
+export default MechSidebar;
