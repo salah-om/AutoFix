@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Users from './components/Users';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Login from './pages/Login';
-import Registration from './pages/Registration';
 import Admin from './pages/Admin';
 import Mechanic from './pages/Mechanic';
 import UsersForm from './components/UsersForm';
@@ -21,7 +20,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/unauth" element={<Unauthorized />} />
-          <Route path="/signup" element={<Registration />} />
 
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/home" element={<Home />} />
