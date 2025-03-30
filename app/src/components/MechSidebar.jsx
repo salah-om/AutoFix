@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaBars, FaAngry, FaHammer, FaSignOutAlt, FaTachometerAlt, FaHeadset } from "react-icons/fa";
+import { FaBars, FaAngry, FaHammer, FaSignOutAlt, FaTachometerAlt, FaHeadset, FaPlus } from "react-icons/fa";
 import "../styles/index.css"; 
 
 const MechSidebar = () => {
@@ -24,10 +24,13 @@ const MechSidebar = () => {
         <NavLink to="/mechanic/fixes" className="menuM-item">
           <FaHammer /> <span>Fixes</span>
         </NavLink>
+        <NavLink to="/mechanic/fixes/add" className="menuM-item">
+          <FaPlus /> <span>Add Fix</span>
+        </NavLink>
         <NavLink to="/mechanic/complaints" className="menuM-item">
           <FaAngry /> <span>Complaints</span>
         </NavLink>
-        <NavLink to="/mechanic/chat" className="menuM-item">
+        <NavLink to="/mechanic" className="menuM-item">
           <FaHeadset /> <span>Chat</span>
         </NavLink>
         <NavLink to="/" className="menuM-item">
