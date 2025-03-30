@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import PrivateRoute from './components/PrivateRoute';
 import Vehicles from './components/Vehicles';
 import VehiclesForm from './components/VehiclesForm';
+import FixesForm from './components/FixesForm';
 import Unauthorized from './pages/Unauthorized';
 import Fixes from './components/Fixes';
 import Complaints from './components/Complaints';
@@ -57,10 +58,14 @@ function App() {
           <Route path="/mechanic/fixes" element={<Fixes />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
+          <Route path="/mechanic/fixes/edit-form/:id" element={<FixesForm />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
+          <Route path="/mechanic/fixes/add" element={<FixesForm />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
           <Route path="/mechanic/complaints" element={<Complaints />} />
           </Route>
-
-
 
 
         </Routes>
