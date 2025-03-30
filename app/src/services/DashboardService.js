@@ -9,3 +9,13 @@ export const getAdminDashboardStats = async () => {
         return null;
     }
 };
+
+export const getMechanicDashboardStats = async () => {
+    try {
+        const response = await http.get(`/dashboard/mechanicstats`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching admin dashboard stats", error);
+        return null;
+    }
+};
