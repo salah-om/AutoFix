@@ -11,6 +11,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Vehicles from './components/Vehicles';
 import VehiclesForm from './components/VehiclesForm';
 import Unauthorized from './pages/Unauthorized';
+import Fixes from './components/Fixes';
+import Complaints from './components/Complaints';
 
 function App() {
 
@@ -52,10 +54,10 @@ function App() {
           <Route path="/mechanic" element={<Mechanic />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
-          <Route path="/mechanic/fixes" element={<Mechanic />} />
+          <Route path="/mechanic/fixes" element={<Fixes />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Mechanic"]} />}>
-          <Route path="/mechanic/complaints" element={<Mechanic />} />
+          <Route path="/mechanic/complaints" element={<Complaints />} />
           </Route>
 
 
