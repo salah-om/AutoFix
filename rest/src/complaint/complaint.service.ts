@@ -39,7 +39,9 @@ export class ComplaintService {
       
     
       async findAll(): Promise<Complaint[]> {
-        return this.complaintsRepository.find();
+        return this.complaintsRepository.find({
+          relations: ['user', 'vehicle'], 
+      });
       }
     
       async findOne(id: number): Promise<Complaint | null> {
