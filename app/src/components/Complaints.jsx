@@ -19,10 +19,6 @@ const Complaints = () => {
         }
     };
 
-    const handleEdit = (id) => {
-        window.location.href = `/mechanic/complaints/edit-form/${id}`;
-    };
-
     const handleDelete = async (id) => {
         try {
             await http.delete(`/complaints/${id}`);
@@ -46,7 +42,7 @@ const Complaints = () => {
                             <th>Description</th>
                             <th>Cost</th>
                             <th>Date</th>
-                            <th>Edit/Delete</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,9 +60,6 @@ const Complaints = () => {
                                 <td>${complaint.cost}</td>
                                 <td>{new Date(complaint.date).toLocaleDateString()}</td>
                                 <td> 
-                                    <button onClick={() => handleEdit(complaint.id)} className="btn btn-primary btn-sm">
-                                        <i className="bx bxs-edit"></i>
-                                    </button>
                                     <button onClick={() => handleDelete(complaint.id)} className="btn btn-danger btn-sm mx-2">
                                         <i className="bx bxs-trash"></i>
                                     </button>
