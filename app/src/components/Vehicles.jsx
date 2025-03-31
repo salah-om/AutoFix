@@ -20,7 +20,7 @@ const Vehicles = () => {
       }
   
       const handleEdit = (id) => {
-          window.location.href = `/vehicles/edit-form/${id}`;
+          window.location.href = `/admin/vehicles/edit-form/${id}`;
       };
   
       const handleDelete = async (id) => {
@@ -43,6 +43,7 @@ const Vehicles = () => {
                         <th>Make</th>
                         <th>Model</th>
                         <th>Year</th>
+                        <th>ImgUrl</th>
                         <th>Edit/Delete</th>
                     </tr>
                 </thead>
@@ -56,6 +57,7 @@ const Vehicles = () => {
                                     <td>{vehicle?.make}</td>
                                     <td>{vehicle?.model}</td>
                                     <td>{vehicle?.year}</td>
+                                    <td>{vehicle?.imgurl}</td>
                                     <td> 
                                         <button onClick={() => handleEdit(vehicle.id)} className="btn btn-primary btn-sm">
                                         <i className="bx bxs-edit"></i>

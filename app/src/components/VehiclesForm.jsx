@@ -71,6 +71,13 @@ const VehiclesForm = () => {
                     <label style={{ color: "white" }}>Year</label>
                     <input onChange={handleChange} type="text" className="form-control" placeholder="Year" name="year" value={vehicle.year || ""} />
                 </div>
+                <input type="file"
+                        id="imgurl" 
+                        name="imgurl" 
+                        className="form-control"  
+                        onChange={handleChange} 
+                        required
+                   ></input>
                 <button type="submit" className="btn btn-primary">{id ? "Update Vehicle" : "Add Vehicle"}</button>
             </form>
         </>
