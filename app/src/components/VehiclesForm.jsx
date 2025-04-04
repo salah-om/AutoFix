@@ -48,7 +48,7 @@ const VehiclesForm = () => {
                 await http.post('/vehicles', vehicle);
             }
 
-            navigate('/vehicles'); // Redirect after saving
+            navigate('/admin/vehicles'); // Redirect after saving
         } catch (error) {
             console.error("Error saving vehicle:", error);
         }
