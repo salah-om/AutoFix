@@ -1,15 +1,17 @@
-
-
-
-
-
-
-
-
-
+import Menu from "../components/Menu";
+import Footer from "../components/Footer";
 const Home = () => {
     return (
-        <h1>Welcome to AutoFix!</h1>
+      <>
+        <Menu />
+        <div className="holderhome">
+          <h2 style={{color: 'white'}}>Select your Vehicle</h2>
+          <div className="makeholders">
+            
+          </div>
+        </div>
+        <Footer />
+      </>
       );
 }
  
