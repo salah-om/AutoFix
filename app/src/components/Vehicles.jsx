@@ -26,7 +26,7 @@ const Vehicles = () => {
       const handleDelete = async (id) => {
           try {
               await http.delete(`/vehicles/${id}`);
-              setVehicles(users.filter(vehicle => vehicle.id !== id)); 
+              setVehicles(vehicles.filter(vehicle => vehicle.id !== id)); 
           } catch (e) {
               alert('Error deleting vehicle: ' + e);
           }
