@@ -20,6 +20,11 @@ export class VehicleController {
         return this.vehicleService.findAll();
     }
 
+    @Get('makes')
+    async getDistinctMakes() {
+        return this.vehicleService.getDistinctMakes();
+    }
+
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<Vehicle> {
         const Vehicle = await this.vehicleService.findOne(id);

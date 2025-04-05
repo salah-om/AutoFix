@@ -25,6 +25,15 @@ export class VehicleService {
         return this.vehiclesRepository.findOneBy({ id: id });
       }
     
+      async getDistinctMakes(): Promise<string[]> {
+        const makes = await this.vehiclesRepository
+          .createQueryBuilder("vehicle")
+          .select("DISTINCT vehicle.make", "make")
+          .getRawMany();
+    
+        return makes.map((item) => item.make);
+      }
+
       async update(id: number, updatedVehicle: UpdateVehicleDto): Promise<Vehicle>{
         const Vehicle = await this.vehiclesRepository.findOneBy({ id });
         if (!Vehicle) {
