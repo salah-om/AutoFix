@@ -29,30 +29,43 @@ const VehiclesForm = () => {
     };
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setVehicle((prevVehicle) => ({
-            ...prevVehicle,
-            [name]: value
-        }));
-    };
-
-    const saveVehicle = async (event) => {
-        event.preventDefault();
-
-        try {
-            if (id) {
-                // Update existing vehicle
-                await http.patch(`/vehicles/${id}`, vehicle);
-            } else {
-                // Create a new vehicle
-                await http.post('/vehicles', vehicle);
-            }
-
-            navigate('/admin/vehicles'); // Redirect after saving
-        } catch (error) {
-            console.error("Error saving vehicle:", error);
+        const { name, value, files } = event.target;
+        if (name === "imgurl") {
+          setVehicle((prev) => ({ ...prev, imgFile: files[0] }));
+        } else {
+          setVehicle((prev) => ({ ...prev, [name]: value }));
         }
-    };
+      };
+      
+
+      const saveVehicle = async (event) => {
+        event.preventDefault();
+      
+        const formData = new FormData();
+        formData.append("make", vehicle.make);
+        formData.append("model", vehicle.model);
+        formData.append("year", vehicle.year);
+        if (vehicle.imgFile) {
+          formData.append("imgurl", vehicle.imgFile); 
+        }
+      
+        try {
+          if (id) {
+            await http.patch(`/vehicles/${id}`, formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+          } else {
+            await http.post("/vehicles", formData, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+          }
+      
+          navigate("/admin/vehicles");
+        } catch (error) {
+          console.error("Error saving vehicle:", error);
+        }
+      };
+      
 
     return (
         <>
