@@ -14,6 +14,7 @@ import FixesForm from './components/FixesForm';
 import Unauthorized from './pages/Unauthorized';
 import Fixes from './components/Fixes';
 import Complaints from './components/Complaints';
+import Models from './components/Models';
 
 function App() {
 
@@ -26,6 +27,9 @@ function App() {
 
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/home" element={<Home />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/cars/:make" element={<Models />} />
           </Route>
 
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
