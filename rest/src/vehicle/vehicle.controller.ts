@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { Vehicle } from './vehicle.entity';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleService } from './vehicle.service';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @Controller('vehicles')
 export class VehicleController {
@@ -11,7 +12,20 @@ export class VehicleController {
     }
 
     @Post()
-    create(@Body() createVehicleDto: CreateVehicleDto) {
+    @UseInterceptors(
+    FileInterceptor('imgurl', {
+      storage: diskStorage({
+        destination: './public', // Make sure this folder exists
+        filename: (req, file, cb) => {
+          cb(null, file.originalname);
+        },
+      }),
+    }),
+  )
+    create(@UploadedFile() file: Express.Multer.File, @Body() createVehicleDto: CreateVehicleDto) {
+        if (file) {
+            createVehicleDto.imgurl = `/${file.originalname}`;
+        }
         return this.vehicleService.create(createVehicleDto);
     }
 
@@ -25,6 +39,11 @@ export class VehicleController {
         return this.vehicleService.getDistinctMakes();
     }
 
+    @Get('models/:make')
+    async getModelsByMake(@Param('make') make: string) {
+        return this.vehicleService.getModelsByMake(make);
+    }
+
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<Vehicle> {
         const Vehicle = await this.vehicleService.findOne(id);
@@ -35,9 +54,28 @@ export class VehicleController {
     }
 
     @Patch(':id')
-    update(@Param('id', ParseIntPipe) id: number, @Body() VehicleUpdate: UpdateVehicleDto) {
-        return this.vehicleService.update(id, VehicleUpdate);
+    @UseInterceptors(
+        FileInterceptor('imgurl', {
+            storage: diskStorage({
+                destination: './public',
+                filename: (req, file, cb) => {
+                    cb(null, file.originalname);
+                },
+            }),
+        }),
+    )
+
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @UploadedFile() file: Express.Multer.File,
+        @Body() updateVehicleDto: UpdateVehicleDto,
+    ) {
+        if (file) {
+        updateVehicleDto.imgurl = `/${file.originalname}`;
+        }
+        return this.vehicleService.update(id, updateVehicleDto);
     }
+
 
     @Delete(':id')
     delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
