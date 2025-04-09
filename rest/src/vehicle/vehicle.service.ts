@@ -44,7 +44,28 @@ export class VehicleService {
         return result.map((v) => v.model);
       }
 
+      async getYearsByMakeAndModel(make: string, model: string): Promise<string[]> {
+        const result = await this.vehiclesRepository
+        .createQueryBuilder("vehicle")
+        .select("DISTINCT vehicle.year","year")
+        .where("vehicle.make = :make", { make })
+        .andWhere("vehicle.model = :model", { model })
+        .getRawMany();
+          
+        return result.map((v) => v.year);
+      }
       
+      async findByMakeModelYear(make?: string, model?: string, year?: string): Promise<Vehicle[]> {
+        const query = this.vehiclesRepository.createQueryBuilder("vehicle");
+        
+        if (make) query.andWhere("vehicle.make = :make", { make });
+        if (model) query.andWhere("vehicle.model = :model", { model });
+        if (year) query.andWhere("vehicle.year = :year", { year });
+        
+        return query.getMany();
+      }
+      
+
       async update(id: number, updatedVehicle: UpdateVehicleDto): Promise<Vehicle>{
         const Vehicle = await this.vehiclesRepository.findOneBy({ id });
         if (!Vehicle) {
