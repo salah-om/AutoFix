@@ -1,18 +1,21 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UseGuards, Request } from '@nestjs/common';
 import { CreateComplaintDto } from './dto/create-complaint.dto';
 import { Complaint } from './complaint.entity';
 import { ComplaintService } from './complaint.service';
 import { UpdateComplaintDto } from './dto/update-complaint.dto';
-
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('complaints')
 export class ComplaintController {
     constructor(private readonly complaintService: ComplaintService) {
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
-    create(@Body() createComplaintDto: CreateComplaintDto) {
-        return this.complaintService.create(createComplaintDto);
+    create(@Request() req, @Body() createComplaintDto: CreateComplaintDto) {
+        const userId = req.user?.id;
+        console.log("User in controller:", req.user);
+        return this.complaintService.create(userId, createComplaintDto);
     }
 
     @Get()

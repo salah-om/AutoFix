@@ -16,11 +16,11 @@ export class ComplaintService {
         private readonly vehicleService: VehicleService,
       ) {}
     
-      async create(createComplaintDto: CreateComplaintDto): Promise<Complaint> {
-        const { user_id, vehicle_id, issue, description, cost } = createComplaintDto;
-      
-        const user = await this.userService.findOne(user_id);
-        const vehicle = await this.vehicleService.findOne(vehicle_id);
+      async create(userId: number, createComplaintDto: CreateComplaintDto): Promise<Complaint> {
+        const { vehicleId, issue, description, cost } = createComplaintDto;
+
+        const user = await this.userService.findOne(userId);
+        const vehicle = await this.vehicleService.findOne(vehicleId);
       
         if (!user || !vehicle) {
           throw new Error('User or Vehicle not found!');
