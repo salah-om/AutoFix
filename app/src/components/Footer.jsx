@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="footer-row">
           {/* Logo Section */}
           <div className="footer-column">
-            <img className="footer-logo" src="/images/cineverselogo.png" alt="Cineverse Logo" />
+            <img className="footer-logo" src="/autofixlogoo.png" alt="AutoFix Logo" />
           </div>
 
           {/* Social Links Section */}

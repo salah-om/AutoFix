@@ -30,7 +30,7 @@ const Menu = () => {
 
             {/* Logo in Center */}
             <Navbar.Brand className="logo">
-              <img src="/aautologos.png" alt="Logo" height="40" />
+              <img src="/autofixlogoo.png" alt="Logo" height="40" />
             </Navbar.Brand>
 
             {/* Right Menu */}
