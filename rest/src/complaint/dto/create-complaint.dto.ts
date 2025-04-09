@@ -1,6 +1,5 @@
 export class CreateComplaintDto {
-      user_id: number;
-      vehicle_id: number;
+      vehicleId: number;
       issue: string;
       description: string;
       cost: string;
