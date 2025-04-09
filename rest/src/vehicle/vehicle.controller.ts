@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UploadedFile, UseInterceptors, Query } from '@nestjs/common';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { Vehicle } from './vehicle.entity';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
@@ -30,8 +30,12 @@ export class VehicleController {
     }
 
     @Get()
-    findAll(): Promise<Vehicle[]> {
-        return this.vehicleService.findAll();
+    async findAll(
+        @Query('make') make?: string,
+        @Query('model') model?: string,
+        @Query('year') year?: string
+    ):  Promise<Vehicle[]> {
+        return this.vehicleService.findByMakeModelYear(make, model, year);
     }
 
     @Get('makes')
@@ -42,6 +46,14 @@ export class VehicleController {
     @Get('models/:make')
     async getModelsByMake(@Param('make') make: string) {
         return this.vehicleService.getModelsByMake(make);
+    }
+
+    @Get('years/:make/:model')
+    async getYearsByMakeAndModel(
+        @Param('make') make: string, 
+        @Param('model') model: string
+    ) {
+        return this.vehicleService.getYearsByMakeAndModel(make,model);
     }
 
     @Get(':id')
