@@ -47,6 +47,49 @@ export class ComplaintService {
       async findOne(id: number): Promise<Complaint | null> {
         return this.complaintsRepository.findOneBy({ id: id });
       }
+
+      async getWorstYear(make: string, model: string) {
+        return this.complaintsRepository
+          .createQueryBuilder('complaint')
+          .select('vehicle.year', 'year')
+          .addSelect('COUNT(complaint.id)', 'complaintCount')
+          .innerJoin('complaint.vehicle', 'vehicle')
+          .where('vehicle.make = :make', { make })
+          .andWhere('vehicle.model = :model', { model })
+          .groupBy('vehicle.year')
+          .orderBy('complaintCount', 'DESC')
+          .limit(1)
+          .getRawOne();
+      }
+      
+      async getComplaintsByYear(make: string, model: string) {
+        return this.complaintsRepository
+          .createQueryBuilder('complaint')
+          .select('vehicle.year', 'year')
+          .addSelect('COUNT(complaint.id)', 'count')
+          .innerJoin('complaint.vehicle', 'vehicle')
+          .where('vehicle.make = :make', { make })
+          .andWhere('vehicle.model = :model', { model })
+          .groupBy('vehicle.year')
+          .getRawMany();
+      }
+      
+      async getWorstProblems(make: string, model: string) {
+        return this.complaintsRepository
+          .createQueryBuilder('complaint')
+          .select([
+            'complaint.issue AS issue',
+            'vehicle.year AS year',
+            'MAX(CAST(complaint.cost AS DECIMAL)) AS maxCost'
+          ])
+          .innerJoin('complaint.vehicle', 'vehicle')
+          .where('vehicle.make = :make', { make })
+          .andWhere('vehicle.model = :model', { model })
+          .groupBy('complaint.issue, vehicle.year')
+          .orderBy('maxCost', 'DESC')
+          .limit(3)
+          .getRawMany();
+      }
     
       async update(id: number, updatedComplaint: UpdateComplaintDto): Promise<Complaint>{
         const Complaint = await this.complaintsRepository.findOneBy({ id });

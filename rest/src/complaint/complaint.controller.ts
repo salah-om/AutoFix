@@ -23,6 +23,21 @@ export class ComplaintController {
         return this.complaintService.findAll();
     }
 
+    @Get(':make/:model/worst-year') 
+    async getWorstYear( @Param('make') make: string, @Param('model') model: string ) { 
+        return this.complaintService.getWorstYear(make, model); 
+    } 
+            
+    @Get(':make/:model/complaints-by-year') 
+    async getComplaintsByYear( @Param('make') make: string, @Param('model') model: string ) {
+        return this.complaintService.getComplaintsByYear(make, model); 
+    } 
+            
+    @Get(':make/:model/worst-problems') 
+    async getWorstProblems( @Param('make') make: string, @Param('model') model: string ) {
+         return this.complaintService.getWorstProblems(make, model); 
+    }
+        
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<Complaint> {
         const Complaint = await this.complaintService.findOne(id);
