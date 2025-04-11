@@ -332,3 +332,49 @@ body, .cont {
     margin-bottom: 20px;
   }
 }
+
+.summary-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background:orange;
+  border-radius: 8px;
+  width: 95%;
+  margin-left: 3%;
+}
+
+.worst-year-card, .problem-card {
+  background: currentColor;
+  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 9px;
+  width: 25%;
+}
+
+.worst-year-card h2 {
+  color: white;
+}
+
+.problems-list {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.problem-card {
+  flex: 1;
+  min-width: 200px;
+}
+
+.holderhome {
+  border-radius: 4px;
+}
+
+.problem-card h4 {
+  color: brown;
+}
+
+p {
+  color: white;
+}
+
