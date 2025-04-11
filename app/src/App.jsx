@@ -16,7 +16,7 @@ import Fixes from './components/Fixes';
 import Complaints from './components/Complaints';
 import Models from './components/Models';
 import AddComplaint from './components/AddComplaint';
-
+import ModelSummary from './components/ModelSummary';
 function App() {
 
   return (
@@ -32,6 +32,10 @@ function App() {
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/cars/:make" element={<Models />} />
           </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/cars/:make/:model" element={<ModelSummary />} />
+          </Route>
+
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/add/complaint" element={<AddComplaint />} />
           </Route>
