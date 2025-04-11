@@ -52,12 +52,12 @@ export class ComplaintService {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
           .select('vehicle.year', 'year')
-          .addSelect('COUNT(complaint.id)', 'complaintCount')
+          .addSelect('COUNT(complaint.id)', 'count')
           .innerJoin('complaint.vehicle', 'vehicle')
           .where('vehicle.make = :make', { make })
           .andWhere('vehicle.model = :model', { model })
           .groupBy('vehicle.year')
-          .orderBy('complaintCount', 'DESC')
+          .orderBy('count', 'DESC')
           .limit(1)
           .getRawOne();
       }
