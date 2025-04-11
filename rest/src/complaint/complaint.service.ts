@@ -90,6 +90,21 @@ export class ComplaintService {
           .limit(3)
           .getRawMany();
       }
+
+      async getComplaintsByMakeModel(make: string, model: string) {
+        return this.complaintsRepository.find({
+          where: {
+            vehicle: {
+              make,
+              model
+            }
+          },
+          relations: ['user', 'vehicle'],
+          order: {
+            date: 'DESC'
+          }
+        });
+      }
     
       async update(id: number, updatedComplaint: UpdateComplaintDto): Promise<Complaint>{
         const Complaint = await this.complaintsRepository.findOneBy({ id });

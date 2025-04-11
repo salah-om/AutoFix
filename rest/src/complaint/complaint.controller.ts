@@ -35,7 +35,12 @@ export class ComplaintController {
             
     @Get(':make/:model/worst-problems') 
     async getWorstProblems( @Param('make') make: string, @Param('model') model: string ) {
-         return this.complaintService.getWorstProblems(make, model); 
+        return this.complaintService.getWorstProblems(make, model); 
+    }
+
+    @Get(':make/:model')
+    async getComplaintsByMakeModel( @Param('make') make: string, @Param('model') model: string) {
+        return this.complaintService.getComplaintsByMakeModel(make, model);
     }
         
     @Get(':id')
