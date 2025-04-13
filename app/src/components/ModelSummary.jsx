@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Menu from "./Menu";
 import Footer from "./Footer";
+import { getVehicleYears, getWorstYear, getComplaintsByYear, getWorstProblems, getAllComplaints } from "../services/ModelSummaryService";
 
 const ModelSummary = () => {
   const { make, model } = useParams();
@@ -11,61 +12,74 @@ const ModelSummary = () => {
     complaintsByYear: {},
     worstProblems: []
   });
+  
+  const [allComplaints, setAllComplaints] = useState([]);
+  const [filteredComplaints, setFilteredComplaints] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch all data in parallel
-        const [yearsRes, worstYearRes, complaintsRes, problemsRes] = await Promise.all([
-          fetch(`http://localhost:3000/vehicles/years/${make}/${model}`),
-          fetch(`http://localhost:3000/complaints/${make}/${model}/worst-year`),
-          fetch(`http://localhost:3000/complaints/${make}/${model}/complaints-by-year`),
-          fetch(`http://localhost:3000/complaints/${make}/${model}/worst-problems`)
-        ]);
-
-        const [years, worstYear, complaintsByYear, worstProblems] = await Promise.all([
-          yearsRes.json(),
-          worstYearRes.json(),
-          complaintsRes.json(),
-          problemsRes.json()
-        ]);
-
-        const complaintsMap = complaintsByYear.reduce((acc, item) => {
-          acc[item.year] = item.count;
-          return acc;
-        }, {});
-
-        setYearsData({
-          years: years.sort((a,b) => a - b),
-          worstYear,
-          complaintsByYear: complaintsMap,
-          worstProblems
-        });
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [make, model]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      
+      const [years, worstYear, complaintsByYear, worstProblems, allComplaints] = await Promise.all([
+        getVehicleYears(make, model),
+        getWorstYear(make, model),
+        getComplaintsByYear(make, model),
+        getWorstProblems(make, model),
+        getAllComplaints(make, model)
+      ]);
+
+      const complaintsMap = complaintsByYear.reduce((acc, item) => {
+        acc[item.year] = item.count;
+        return acc;
+      }, {});
+
+      setYearsData({
+        years: years.sort((a,b) => a - b),
+        worstYear,
+        complaintsByYear: complaintsMap,
+        worstProblems
+      });
+
+      setAllComplaints(allComplaints);
+      setFilteredComplaints(allComplaints);
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleYearClick = (year) => {
+    setSelectedYear(year);
+    if (year === null) {
+      setFilteredComplaints(allComplaints);
+    } else {
+      setFilteredComplaints(allComplaints.filter(
+        complaint => complaint.vehicle.year === year
+      ));
+    }
+  };
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <>
       <Menu />
-      <div className="holderhome">
+      <div className="holderhomeM">
+        <div className="holderhome-summary">
         <h1>
-          <span style={{ textTransform: "capitalize", color: "white", marginLeft: "37%" }}>{make} {model}</span>
+          <span style={{ textTransform: "capitalize", color: "white", marginLeft: "37%" }}>
+            {make} {model}
+          </span>
         </h1>
         
-        {/* Worst Model Year Section */}
-        <div className="summary-section">
+        <div className="summary-sectionWM">
           <h3>Worst Model Year</h3>
           {yearsData.worstYear && (
             <div className="worst-year-card">
@@ -75,22 +89,31 @@ const ModelSummary = () => {
           )}
         </div>
 
-        {/* Model Year Comparison */}
         <div className="summary-section">
           <h3>MODEL YEAR COMPARISON</h3>
           <ul className="carmakes">
+            <li>
+              <button 
+                onClick={() => handleYearClick(null)}
+                className={!selectedYear ? "active-year" : ""}
+              >
+                <h2>All Years</h2>
+              </button>
+            </li>
             {yearsData.years.map((year, index) => (
               <li key={index}>
-                <Link to={`/cars/${make}/${model}/${year}`}>  
+                <button 
+                  onClick={() => handleYearClick(year)}
+                  className={selectedYear === year ? "active-year" : ""}
+                >
                   <h2>{year}</h2>
                   <p>{yearsData.complaintsByYear?.[year] || 0} complaints</p>
-                </Link>
+                </button>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Worst Problems Section */}
         <div className="summary-section">
           <h3>WORST <span style={{ textTransform: "capitalize" }}>{make} {model}</span> PROBLEMS</h3>
           <div className="problems-list">
@@ -103,13 +126,38 @@ const ModelSummary = () => {
             ))}
           </div>
         </div>
+      </div>
 
         <div className="complaints-section">
-          <h3 style={{color: "white"}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complaints:</h3>
-          <div className="complaints-background">
-            
+          <h3 style={{color: "white", textTransform: "capitalize"}}>
+            {selectedYear ? `${make} ${model} ${selectedYear} Complaints` : `All ${make} ${model} Complaints`}
+          </h3>
+          <div className="complaints-list">
+            {filteredComplaints.length > 0 ? (
+              filteredComplaints.map((complaint) => (
+                <div key={complaint.id} className="complaint-card">
+                  <div className="complaint-header">
+                    <span className="username">{complaint.user.username}</span>
+                    <span className="date">
+                      {new Date(complaint.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <div className="vehicle-info">
+                    {complaint.vehicle.year} {complaint.vehicle.make} {complaint.vehicle.model}
+                  </div>
+                  <h4 className="issue">{complaint.issue}</h4>
+                  <p className="description">{complaint.description}</p>
+                  <div className="complaint-footer">
+                    <span className="cost">Repair Cost: ${complaint.cost}</span>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No complaints found</p>
+            )}
           </div>
         </div>
+        <h1 className="news-header"></h1>
       </div>
       <Footer />
     </>
