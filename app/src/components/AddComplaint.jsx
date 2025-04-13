@@ -94,6 +94,7 @@ const AddComplaint = () => {
   return (
     <>
       <Menu />
+      <div className="fixes-container">
       <div className="complaint-holder" style={{ background: "orange", borderRadius: "12px", width: "65%",  marginLeft: "15%" }}>
         <h2 style={{ color: "black", marginLeft: "37%"  }}>
           Add Complaint
@@ -138,17 +139,18 @@ const AddComplaint = () => {
 
             <label>5. Describe what happened with the car below:</label>
             <div>
-              <textarea name="description" value={complaint.description} onChange={handleChange} required />
+              <textarea name="description" style = {{width: "42%"}}value={complaint.description} onChange={handleChange} required />
             </div>
 
             <label>6. How much did/does it cost to fix?</label>
             <div>
-              <input type="text" name="cost" value={complaint.cost} onChange={handleChange} required />
+              <input type="text" name="cost" style = {{width: "22%"}} value={complaint.cost} onChange={handleChange} required />
             </div>
 
-            <button type="submit">Submit Complaint</button>
+            <button className='add-veh-btn' style={{marginTop: "2%"}} type="submit">Submit Complaint</button>
           </form>
         </div>
+      </div>
       </div>
       <Footer />
     </>
