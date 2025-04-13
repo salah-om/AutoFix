@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAdminDashboardStats } from "../services/DashboardService";
-import RespSidebar from "./RespSidebar";
-import "../styles/index.css"; 
-
+import { FaAngry, FaCar, FaUser, FaWrench } from "react-icons/fa";
+import { BsShieldLock } from "react-icons/bs";
 
 const AdminDash = () => {
     const [stats, setStats] = useState({
@@ -14,19 +13,20 @@ const AdminDash = () => {
     });
 
     useEffect(() => {
-        async function fetchStats() {
-            const data = await getAdminDashboardStats();
-            if (data) setStats(data);
-        }
         fetchStats();
     }, []);
 
+    async function fetchStats() {
+        const data = await getAdminDashboardStats();
+        if (data) setStats(data);
+    }
+    
     return ( 
         <>
         <div className="admin-dashboard">
             <div className="card-container">
                 <div className="cardsdash">
-                    <img src="/images/users-icon.png" alt="Users" />
+                    <FaUser />
                     <div className="card-content">
                         <h3>Number of Users:</h3>
                         <p>{stats.totalUsers}</p>
@@ -34,7 +34,7 @@ const AdminDash = () => {
                 </div>
 
                 <div className="cardsdash">
-                    <img src="/images/mechanics.png" alt="Mechanics" />
+                <FaWrench />
                     <div className="card-content">
                         <h3>Number of Mechanics:</h3>
                         <p>{stats.totalMechanics}</p>
@@ -42,7 +42,7 @@ const AdminDash = () => {
                 </div>
 
                 <div className="cardsdash">
-                    <img src="/images/admins.png" alt="Admins" />
+                <BsShieldLock />
                     <div className="card-content">
                         <h3>Number of Admins:</h3>
                         <p>{stats.totalAdmins}</p>
@@ -50,7 +50,7 @@ const AdminDash = () => {
                 </div>
 
                 <div className="cardsdash">
-                    <img src="/images/vehicles.png" alt="Vehicles" />
+                <FaCar />
                     <div className="card-content">
                         <h3>Number of Vehicles:</h3>
                         <p>{stats.totalVehicles}</p>
@@ -58,7 +58,7 @@ const AdminDash = () => {
                 </div>
 
                 <div className="cardsdash">
-                    <img src="/images/complaints.png" alt="Complaints" />
+                    <FaAngry />
                     <div className="card-content">
                         <h3>Number of Complaints:</h3>
                         <p>{stats.totalComplaints}</p>
