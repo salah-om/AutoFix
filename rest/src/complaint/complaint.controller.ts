@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UseGuards, Request, Req, UnauthorizedException } from '@nestjs/common';
 import { CreateComplaintDto } from './dto/create-complaint.dto';
 import { Complaint } from './complaint.entity';
 import { ComplaintService } from './complaint.service';
@@ -21,6 +21,13 @@ export class ComplaintController {
     @Get()
     findAll(): Promise<Complaint[]> {
         return this.complaintService.findAll();
+    }
+
+    @Get('user')
+    @UseGuards(JwtAuthGuard)
+    async getUserComplaints(@Req() req) {
+        const userId = req.user.id; // Assuming you're using JWT with user ID
+        return this.complaintService.getComplaintsByUser(userId);
     }
 
     @Get(':make/:model/worst-year') 
@@ -53,8 +60,21 @@ export class ComplaintController {
     }
 
     @Patch(':id')
-    update(@Param('id', ParseIntPipe) id: number, @Body() ComplaintUpdate: UpdateComplaintDto) {
-        return this.complaintService.update(id, ComplaintUpdate);
+    @UseGuards(JwtAuthGuard)
+    async update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateComplaintDto: UpdateComplaintDto,
+        @Req() req
+        ) {
+        
+        const userId = req.user?.id;
+        const complaint = await this.complaintService.findOneForUser(id,userId);
+  
+        if (!complaint) {
+            throw new UnauthorizedException('Complaint not found.');
+        }
+
+        return this.complaintService.update(id, updateComplaintDto);
     }
 
     @Delete(':id')
