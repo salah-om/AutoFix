@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Complaint } from './complaint.entity';
@@ -105,15 +105,43 @@ export class ComplaintService {
           }
         });
       }
+
+      async getComplaintsByUser(userId: number) {
+        return this.complaintsRepository.find({
+          where: { user: { id: userId } },
+          relations: ['vehicle', 'user'],
+          order: { date: 'DESC' }
+        });
+      }
+
+      async findOneForUser(id: number, userId: number) {
+        return this.complaintsRepository.findOne({
+          where: {
+            id,
+            user: { id: userId }
+          },
+          relations: ['user']
+        });
+      }
     
-      async update(id: number, updatedComplaint: UpdateComplaintDto): Promise<Complaint>{
-        const Complaint = await this.complaintsRepository.findOneBy({ id });
-        if (!Complaint) {
-          throw new Error('Complaint not found');
+      async update(id: number, updateComplaintDto: UpdateComplaintDto): Promise<Complaint>{
+        const complaint = await this.complaintsRepository.findOneBy({ id });
+        if (!complaint) {
+          throw new NotFoundException('Complaint not found');
         }
-        // instead of manually assigning each attribute with an if statement
-        Object.assign(Complaint, updatedComplaint); 
-        return this.complaintsRepository.save(Complaint);
+
+        // Only update the fields that were actually provided
+        if (updateComplaintDto.issue !== undefined) {
+          complaint.issue = updateComplaintDto.issue;
+        }
+        if (updateComplaintDto.description !== undefined) {
+          complaint.description = updateComplaintDto.description;
+        }
+        if (updateComplaintDto.cost !== undefined) {
+        complaint.cost = updateComplaintDto.cost; // Stays as string
+        }
+
+        return this.complaintsRepository.save(complaint);
       }
 
       async delete(id: number): Promise<void> {
