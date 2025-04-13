@@ -16,7 +16,11 @@ import Fixes from './components/Fixes';
 import Complaints from './components/Complaints';
 import Models from './components/Models';
 import AddComplaint from './components/AddComplaint';
+import UpdateComplaint from './components/UpdateComplaint';
 import ModelSummary from './components/ModelSummary';
+import CommonFixes from './components/CommonFixes';
+import News
+ from './components/News';
 function App() {
 
   return (
@@ -30,14 +34,22 @@ function App() {
           <Route path="/home" element={<Home />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/common-fixes" element={<CommonFixes />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/news" element={<News />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/cars/:make" element={<Models />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/cars/:make/:model" element={<ModelSummary />} />
           </Route>
-
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
-          <Route path="/add/complaint" element={<AddComplaint />} />
+          <Route path="/add-complaint" element={<AddComplaint />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/update-complaint" element={<UpdateComplaint />} />
           </Route>
 
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
