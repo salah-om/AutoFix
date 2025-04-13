@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getMechanicDashboardStats } from "../services/DashboardService";
+import { FaAngry, FaHammer, FaHeadset } from "react-icons/fa";
 import "../styles/index.css"; 
 
 
@@ -11,19 +12,20 @@ const MechanicDash = () => {
     });
 
     useEffect(() => {
-        async function fetchStats() {
-            const data = await getMechanicDashboardStats();
-            if (data) setStats(data);
-        }
         fetchStats();
     }, []);
 
+    async function fetchStats() {
+        const data = await getMechanicDashboardStats();
+        if (data) setStats(data);
+    }
+    
     return ( 
         <>
         <div className="mechanic-dashboard">
-            <div className="card-container">
+            <div className="card-container-m">
                 <div className="mcardsdash">
-                    <img src="/images/users-icon.png" alt="Complaints" />
+                    <FaAngry />
                     <div className="card-content">
                         <h3>Number of Complaints:</h3>
                         <p>{stats.totalComplaints}</p>
@@ -31,7 +33,7 @@ const MechanicDash = () => {
                 </div>
 
                 <div className="mcardsdash">
-                    <img src="/images/mechanics.png" alt="Fixes" />
+                    <FaHammer />
                     <div className="card-content">
                         <h3>Number of Fixes:</h3>
                         <p>{stats.totalFixes}</p>
@@ -39,7 +41,7 @@ const MechanicDash = () => {
                 </div>
 
                 <div className="mcardsdash">
-                    <img src="/images/admins.png" alt="Chats" />
+                    <FaHeadset />
                     <div className="card-content">
                         <h3>Number of Chats:</h3>
                         <p>{stats.totalChats}</p>

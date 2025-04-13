@@ -1,9 +1,10 @@
 import http from "../http-common";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { IoCaretBackCircle } from "react-icons/io5";
 
 const VehiclesForm = () => {
-    const { id } = useParams(); // Get vehicle ID from URL
+    const { id } = useParams(); 
     const navigate = useNavigate();
 
     const [vehicle, setVehicle] = useState({
@@ -12,7 +13,6 @@ const VehiclesForm = () => {
         year: ''
     });
 
-    // If there's an ID, fetch the vehicle data
     useEffect(() => {
         if (id) {
             fetchVehicleById(id);
@@ -37,7 +37,6 @@ const VehiclesForm = () => {
         }
       };
       
-
       const saveVehicle = async (event) => {
         event.preventDefault();
       
@@ -69,21 +68,26 @@ const VehiclesForm = () => {
 
     return (
         <>
-            <nav><Link to="/admin/vehicles">Back</Link></nav>
-            <h2 style={{ color: "white" }}>{id ? "Edit Vehicle" : "Add Vehicle"}</h2>
+        <div className="container-veh-form">
+        <div className="card-veh">
+            <nav className="back">
+              <IoCaretBackCircle />
+              <Link to="/admin/vehicles">Back</Link></nav>
+            <h2>{id ? "Edit Vehicle" : "Add Vehicle"}</h2>
             <form onSubmit={saveVehicle}>
                 <div className="form-group">
-                    <label style={{ color: "white" }}>Make</label>
+                    <label style={{color: "#fc9c00"}} >Make</label>
                     <input onChange={handleChange} type="text" className="form-control" placeholder="Make" name="make" value={vehicle.make || ""} />
                 </div>
                 <div className="form-group">
-                    <label style={{ color: "white" }}>Model</label>
+                    <label style={{color: "#fc9c00"}}>Model</label>
                     <input onChange={handleChange} type="text" className="form-control" placeholder="Model" name="model" value={vehicle.model || ""} />
                 </div>
                 <div className="form-group">
-                    <label style={{ color: "white" }}>Year</label>
+                    <label style={{color: "#fc9c00"}}>Year</label>
                     <input onChange={handleChange} type="text" className="form-control" placeholder="Year" name="year" value={vehicle.year || ""} />
                 </div>
+                <label style={{color: "#fc9c00"}}>File</label>
                 <input type="file"
                         id="imgurl" 
                         name="imgurl" 
@@ -91,8 +95,10 @@ const VehiclesForm = () => {
                         onChange={handleChange} 
                         required
                    ></input>
-                <button type="submit" className="btn btn-primary">{id ? "Update Vehicle" : "Add Vehicle"}</button>
+                <button type="submit" className="add-veh-btn">{id ? "Update Vehicle" : "Add Vehicle"}</button>
             </form>
+            </div>
+            </div>
         </>
     );
 };

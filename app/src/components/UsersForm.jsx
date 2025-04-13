@@ -1,6 +1,7 @@
 import http from "../http-common";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { IoCaretBackCircle } from "react-icons/io5";
 
 const UsersForm = () => {
 
@@ -51,35 +52,34 @@ const UsersForm = () => {
 
     return (
         <>
-            <nav><Link to ='/admin/users'>Back</Link></nav>
+            <div className="container-veh-form">
+            <div className="card-veh" style={{height: "362px"}}>
+            <nav className="back">
+                          <IoCaretBackCircle />
+                          <Link to="/admin/users">Back</Link></nav>
+            <h2>Edit User</h2>
             <form onSubmit={saveUser}>
                 <div className="form-group">
-                    <label style={{color: "white"}}> Username</label>
+                    <label style={{color: "#fc9c00"}}> Username</label>
                     <input onChange={(event) => handleChange('username', event.target.value)} type="text" className="form-control" placeholder="Username" name ="username" value={user.username}/>
                 </div>
                 <div className="form-group">
-                    <label style={{color: "white"}}>Email</label>
+                    <label style={{color: "#fc9c00"}}>Email</label>
                     <input onChange={(event) => handleChange('email', event.target.value)} type="text" className="form-control" placeholder="Email" name ="email" value={user.email}/>
                 </div>
 
                 <div className="form-check">
-                    <label style={{color: "white"}}>Role</label>
-                    <select 
-                        id="role" 
-                        name="role" 
-                        className="form-control" 
-                        value={user.role} 
-                        onChange={handleChange} 
-                        required
-                    >
-
+                    <label style={{color: "#fc9c00"}}>Role</label>
+                    <select id="role" name="role" className="form-control"style={{marginLeft: "-7%", width: "43%"}}value={user.role} onChange={handleChange} required>
                         {["Admin", "Mechanic", "Visitor"].map((role) => (
                             <option key={role} value={role}>{role}</option>
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="add-veh-btn">Submit</button>
             </form>
+            </div>
+            </div>
         </>
     )
 }

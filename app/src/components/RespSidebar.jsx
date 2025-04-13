@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaUser, FaCar, FaPlus, FaSignOutAlt, FaTachometerAlt } from "react-icons/fa";
-import "../styles/index.css"; 
 
 const RespSidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   return (
     <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
-      {/* Sidebar Header with Toggle Button */}
       <div className="sidebar-header">
         <button className="toggle-btn" onClick={() => setIsOpen(!isOpen)}>
           <FaBars />
@@ -16,7 +14,6 @@ const RespSidebar = () => {
         {isOpen && <span className="menu-title">Welcome, Admin</span>}
       </div>
 
-      {/* Sidebar Menu */}
       <nav>
         <NavLink to="/admin" className="menu-item">
           <FaTachometerAlt /> <span>Dashboard</span>

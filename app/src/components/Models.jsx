@@ -23,7 +23,7 @@ const Models = () => {
     <>
       <Menu />
       <div className="holderhome">
-        <h2 style={{ color: "white" }}>
+        <h2 className="news-header" style={{ color: "white" }}>
           Select a model for <span style={{ textTransform: "capitalize" }}>{make}</span>
         </h2>
         <ul className="carmakes">

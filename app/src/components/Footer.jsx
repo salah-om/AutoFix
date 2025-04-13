@@ -1,18 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import '../styles/index.css';
 
 const Footer = () => {
   return (
     <footer className="footer-container">
       <div className="footer-wrapper">
         <div className="footer-row">
-          {/* Logo Section */}
+
           <div className="footer-column">
             <img className="footer-logo" src="/autofixlogoo.png" alt="AutoFix Logo" />
           </div>
 
-          {/* Social Links Section */}
           <div className="footer-column">
             <h4>Follow us</h4>
             <div className="footer-social-links">
@@ -23,7 +21,6 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Company Links Section */}
           <div className="footer-column">
             <h4>Company</h4>
             <ul>
@@ -34,7 +31,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Help Section */}
           <div className="footer-column">
             <h4>Help</h4>
             <ul>

@@ -41,7 +41,7 @@ const Users = () => {
     return (
         <>
         <RespSidebar />
-        <div className="container" style={{maxWidth: "965px"}}>
+        <div className="container-for-users" style={{maxWidth: "965px"}}>
             <table className="table table-dark table-striped">
                 <thead>
                     <tr>

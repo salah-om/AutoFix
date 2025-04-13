@@ -1,6 +1,7 @@
 import http from "../http-common";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import { IoCaretBackCircle } from "react-icons/io5";
 
 const FixesForm = () => {
 
@@ -53,29 +54,33 @@ const FixesForm = () => {
 
     return (
         <>
-            <nav><Link to ='/mechanic/fixes'>Back</Link></nav>
-            <form onSubmit={saveFix}>
-                <div className="form-group">
-                    <label style={{color: "white"}}> Issue</label>
-                    <input onChange={handleChange} type="text" className="form-control" placeholder="Issue" name ="issue" value={fix.issue}/>
-                </div>
-                <div className="form-group">
-                    <label style={{color: "white"}}>Description</label>
-                    <input onChange={handleChange} type="text" className="form-control" placeholder="Description" name ="description" value={fix.description}/>
-                </div>
+            <div className="container-veh-form">
+                <div className="card-veh">
+                    <nav className="back">
+                          <IoCaretBackCircle />
+                          <Link to="/mechanic/fixes">Back</Link>
+                    </nav>
+                    <h2>{id ? "Edit Fix" : "Add Fix"}</h2>
 
-                <div className="form-check">
-                    <label style={{color: "white"}}>Video Url</label>
-                    <input type="file"
-                        id="videourl" 
-                        name="videourl" 
-                        className="form-control"  
-                        onChange={handleChange} 
-                        required
-                   ></input>
+                    <form onSubmit={saveFix}>
+                        <div className="form-group">
+                        <label style={{color: "#fc9c00"}}> Issue</label>
+                        <input onChange={handleChange} type="text" className="form-control" placeholder="Issue" name ="issue" value={fix.issue}/>
+                        </div>
+                    <div className="form-group">
+                        <label style={{color: "#fc9c00"}}>Description</label>
+                        <input onChange={handleChange} type="text" className="form-control" placeholder="Description" name ="description" value={fix.description}/>
+                    </div>
+                    <div className="form-check">
+                        <label style={{color: "#fc9c00"}}>Video Url</label>
+                        <input type="file" id="videourl"  name="videourl"  className="form-control" style={{marginLeft: "-7%", width: "107%"}} required>
+                        </input>
+                    </div>
+                    
+                    <button type="submit" className="add-veh-btn">Submit</button>
+                    </form>
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
+            </div>
         </>
     )
 }

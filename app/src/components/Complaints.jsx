@@ -12,7 +12,6 @@ const Complaints = () => {
     const fetchComplaints = async () => {
         try {
             const response = await http.get("/complaints");
-            console.log("API Data:", response?.data);
             setComplaints(response?.data);
         } catch (e) {
             alert('Route not found: ' + e);
