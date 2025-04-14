@@ -19,8 +19,9 @@ import AddComplaint from './components/AddComplaint';
 import UpdateComplaint from './components/UpdateComplaint';
 import ModelSummary from './components/ModelSummary';
 import CommonFixes from './components/CommonFixes';
-import News
- from './components/News';
+import News from './components/News';
+import SearchComplaints from './components/SearchComplaints';
+
 function App() {
 
   return (
@@ -50,6 +51,9 @@ function App() {
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/update-complaint" element={<UpdateComplaint />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/search-complaints" element={<SearchComplaints />} />
           </Route>
 
           <Route element={<PrivateRoute allowedRoles={["Admin"]} />}>
