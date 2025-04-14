@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UseGuards, Request, Req, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UseGuards, Request, Req, UnauthorizedException, Query, BadRequestException } from '@nestjs/common';
 import { CreateComplaintDto } from './dto/create-complaint.dto';
 import { Complaint } from './complaint.entity';
 import { ComplaintService } from './complaint.service';
@@ -28,6 +28,17 @@ export class ComplaintController {
     async getUserComplaints(@Req() req) {
         const userId = req.user.id; // Assuming you're using JWT with user ID
         return this.complaintService.getComplaintsByUser(userId);
+    }
+
+    @Get('search')
+    async searchComplaints(
+    @Query('query') query: string,
+    @Query('limit') limit: number = 20
+    ) {
+        if (!query || query.length < 3) {
+            throw new BadRequestException('Search query must be at least 3 characters');
+        }
+        return this.complaintService.searchComplaints(query, limit);
     }
 
     @Get(':make/:model/worst-year') 

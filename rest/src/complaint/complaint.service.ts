@@ -123,6 +123,19 @@ export class ComplaintService {
           relations: ['user']
         });
       }
+
+      async searchComplaints(query: string, limit: number) {
+        return this.complaintsRepository
+          .createQueryBuilder('complaint')
+          .leftJoinAndSelect('complaint.vehicle', 'vehicle')
+          .where('complaint.issue LIKE :query', { query: `%${query}%` })
+          .orWhere('complaint.description LIKE :query', { query: `%${query}%` })
+          .orWhere('vehicle.make LIKE :query', { query: `%${query}%` })
+          .orWhere('vehicle.model LIKE :query', { query: `%${query}%` })
+          .orderBy('complaint.date', 'DESC')
+          .take(limit)
+          .getMany();
+      }
     
       async update(id: number, updateComplaintDto: UpdateComplaintDto): Promise<Complaint>{
         const complaint = await this.complaintsRepository.findOneBy({ id });
