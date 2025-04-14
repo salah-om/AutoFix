@@ -90,7 +90,7 @@ const ModelSummary = () => {
         </div>
 
         <div className="summary-section">
-          <h3>MODEL YEAR COMPARISON</h3>
+          <h3 style={{marginLeft: '34%'}}>MODEL YEAR COMPARISON</h3>
           <ul className="carmakes">
             <li>
               <button 
@@ -115,7 +115,7 @@ const ModelSummary = () => {
         </div>
 
         <div className="summary-section">
-          <h3>WORST <span style={{ textTransform: "capitalize" }}>{make} {model}</span> PROBLEMS</h3>
+          <h3 style={{marginLeft: '30%'}}>WORST <span style={{ textTransform: "capitalize" }}>{make} {model}</span> PROBLEMS</h3>
           <div className="problems-list">
             {yearsData.worstProblems.map((problem, index) => (
               <div key={index} className="problem-card">
@@ -129,7 +129,7 @@ const ModelSummary = () => {
       </div>
 
         <div className="complaints-section">
-          <h3 style={{color: "white", textTransform: "capitalize"}}>
+          <h3 style={{color: "white", textTransform: "capitalize", marginLeft: '33%'}}>
             {selectedYear ? `${make} ${model} ${selectedYear} Complaints` : `All ${make} ${model} Complaints`}
           </h3>
           <div className="complaints-list">

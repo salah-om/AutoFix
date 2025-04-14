@@ -95,12 +95,12 @@ const AddComplaint = () => {
     <>
       <Menu />
       <div className="fixes-container">
-      <div className="complaint-holder" style={{ background: "orange", borderRadius: "12px", width: "65%",  marginLeft: "15%" }}>
-        <h2 style={{ color: "black", marginLeft: "37%"  }}>
+      <div className="complaint-holder" style={{ background: "#ca0000", borderRadius: "12px", width: "65%",  marginLeft: "15%" }}>
+        <h2 style={{ color: "#e2e2e2", marginLeft: "37%"  }}>
           Add Complaint
         </h2>
 
-        <div className="complaint-holder2" style={{ background: "wheat", borderRadius: "12px", padding: "3%" }}>
+        <div className="complaint-holder2" style={{ background: "#e2e2e2", borderRadius: "12px", padding: "3%" }}>
           <form onSubmit={handleSubmit}>
             <label>1. Select the Car Brand</label>
             <div>

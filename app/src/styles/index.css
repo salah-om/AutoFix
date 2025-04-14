@@ -447,6 +447,11 @@ body, .cont {
   width: 15%;
 }
 
+.me-3 {
+  margin-left: -10%;
+  width: 15%;
+}
+
 /* Footer */
 .footer-container {
   background: #212529;
