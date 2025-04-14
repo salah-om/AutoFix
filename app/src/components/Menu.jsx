@@ -1,8 +1,20 @@
 import { Container, Nav, Navbar, Form, FormControl, Button } from "react-bootstrap";
-import { FaSignOutAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaSignOutAlt, FaSearch } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from 'react'; 
 
 const Menu = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search-complaints?q=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery(""); 
+    }
+  };
+
   return (
     <>
 
@@ -25,6 +37,13 @@ const Menu = () => {
               <Nav.Link as={Link} to="/add-complaint">Add Complaint</Nav.Link>
               <Nav.Link as={Link} to="/update-complaint">Update Complaint</Nav.Link>
               <Nav.Link as={Link} to="/chat">Chat with a Mechanic</Nav.Link>
+              <Form onSubmit={handleSearch} className="d-flex search-bar">
+              <Form.Control type="search" placeholder="Search complaints (e.g. 'transmission')" className="me-3" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ minWidth: "190px" }}
+              />
+              <Button variant="outline-light" type="submit">
+                <FaSearch />
+              </Button>
+            </Form>
               <Nav.Link as={Link} to="/"><span>Sign Out&nbsp;&nbsp;</span><FaSignOutAlt /></Nav.Link>
             </Nav>
           </Navbar.Collapse>
