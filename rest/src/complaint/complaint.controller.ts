@@ -41,6 +41,16 @@ export class ComplaintController {
         return this.complaintService.searchComplaints(query, limit);
     }
 
+    @Get('top-best') 
+    async getBestCars() {
+        return this.complaintService.getBestCars(); 
+    } 
+
+    @Get('top-worst') 
+    async getWorstCars() {
+        return this.complaintService.getWorstCars(); 
+    } 
+
     @Get(':make/:model/worst-year') 
     async getWorstYear( @Param('make') make: string, @Param('model') model: string ) { 
         return this.complaintService.getWorstYear(make, model); 
