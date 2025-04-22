@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Menu from "./Menu";
 import Footer from "./Footer";
 import { getVehicleYears, getWorstYear, getComplaintsByYear, getWorstProblems, getAllComplaints } from "../services/ModelSummaryService";
+import ComplaintList from "./ComplaintList";
 
 const ModelSummary = () => {
   const { make, model } = useParams();
@@ -128,35 +129,9 @@ const ModelSummary = () => {
         </div>
       </div>
 
-        <div className="complaints-section">
-          <h3 style={{color: "white", textTransform: "capitalize", marginLeft: '33%'}}>
-            {selectedYear ? `${make} ${model} ${selectedYear} Complaints` : `All ${make} ${model} Complaints`}
-          </h3>
-          <div className="complaints-list">
-            {filteredComplaints.length > 0 ? (
-              filteredComplaints.map((complaint) => (
-                <div key={complaint.id} className="complaint-card">
-                  <div className="complaint-header">
-                    <span className="username">{complaint.user.username}</span>
-                    <span className="date">
-                      {new Date(complaint.date).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <div className="vehicle-info">
-                    {complaint.vehicle.year} {complaint.vehicle.make} {complaint.vehicle.model}
-                  </div>
-                  <h4 className="issue">{complaint.issue}</h4>
-                  <p className="description">{complaint.description}</p>
-                  <div className="complaint-footer">
-                    <span className="cost">Repair Cost: ${complaint.cost}</span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No complaints found</p>
-            )}
-          </div>
-        </div>
+        <ComplaintList complaints={filteredComplaints} 
+                       title={selectedYear ? `${make} ${model} ${selectedYear} Complaints` : `All ${make} ${model} Complaints`}
+        />
         <h1 className="news-header"></h1>
       </div>
       <Footer />
