@@ -6,15 +6,24 @@ import http from "../http-common";
 
 const Home = () => {
   const [carMakes, setCarMakes] = useState([]);
+  const [bestCars, setBestCars] = useState([]);
+  const [worstCars, setWorstCars] = useState([]);
 
   useEffect(() => {
-    fetchCarMakes();
+    fetchCarData();
   }, []);
   
-  const fetchCarMakes = async () => {
+  const fetchCarData = async () => {
     try {
-      const response = await http.get("/vehicles/makes");
-      setCarMakes(response.data);
+      const [makesResponse, bestResponse, worstResponse] = await Promise.all([
+        http.get("/vehicles/makes"),
+        http.get("/complaints/top-best"),
+        http.get("/complaints/top-worst")
+      ]);
+      
+      setCarMakes(makesResponse.data);
+      setBestCars(bestResponse.data);
+      setWorstCars(worstResponse.data);
     } catch (err) {
       console.error("Error fetching car makes:", err);
     } 
@@ -24,6 +33,7 @@ const Home = () => {
       <>
         <Menu />
       <div className="holderhome">
+
         <h2 className="news-header" style={{ color: "white" }}>Select your Vehicle</h2>
         <ul className="carmakes">
           {carMakes.map((make, index) => (
@@ -35,6 +45,26 @@ const Home = () => {
             </li>
           ))}
         </ul>
+        <h2 className="news-header"></h2>
+        <div className="car-rankings-container">
+          <div className="car-ranking-box best-cars">
+            <h3>Top 3 Best Models</h3>
+            {bestCars.map((car, index) => (
+              <div key={index} className="car-ranking-item">
+                <h4>{car.make} {car.model} ({car.year})</h4>
+              </div>
+            ))}
+          </div>
+          
+          <div className="car-ranking-box worst-cars">
+            <h3>Top 3 Worst Models</h3>
+            {worstCars.map((car, index) => (
+              <div key={index} className="car-ranking-item">
+                <h4>{car.make} {car.model} ({car.year})</h4>
+              </div>
+            ))}
+          </div>
+        </div> 
         <h2 className="news-header"></h2>
       </div>
       <Footer />
