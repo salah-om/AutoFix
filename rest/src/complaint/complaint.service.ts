@@ -48,6 +48,45 @@ export class ComplaintService {
         return this.complaintsRepository.findOneBy({ id: id });
       }
 
+      async getBestCars() {
+        return this.complaintsRepository
+          .createQueryBuilder('complaint')
+          .select('vehicle.make', 'make')
+          .addSelect('vehicle.model', 'model')
+          .addSelect('vehicle.year', 'year')
+          .addSelect('COUNT(complaint.id)', 'complaint_count')
+          .addSelect('AVG(complaint.cost)', 'avg_repair_cost')
+          .addSelect('(COUNT(complaint.id) * AVG(complaint.cost))', 'severity_score')
+          .innerJoin('complaint.vehicle', 'vehicle')
+          .groupBy('vehicle.make')
+          .addGroupBy('vehicle.model')
+          .addGroupBy('vehicle.year')
+          .having('COUNT(complaint.id) > 0')
+          .orderBy('complaint_count', 'ASC')
+          .addOrderBy('avg_repair_cost', 'ASC')
+          .limit(3)
+          .getRawMany();
+      }
+
+      async getWorstCars() {
+        return this.complaintsRepository
+          .createQueryBuilder('complaint')
+          .select('vehicle.make', 'make')
+          .addSelect('vehicle.model', 'model')
+          .addSelect('vehicle.year', 'year')
+          .addSelect('COUNT(complaint.id)', 'complaint_count')
+          .addSelect('AVG(complaint.cost)', 'avg_repair_cost')
+          .addSelect('(COUNT(complaint.id) * AVG(complaint.cost))', 'severity_score')
+          .innerJoin('complaint.vehicle', 'vehicle')
+          .groupBy('vehicle.make')
+          .addGroupBy('vehicle.model')
+          .addGroupBy('vehicle.year')
+          .orderBy('severity_score', 'DESC')
+          .addOrderBy('complaint_count', 'DESC') 
+          .limit(3)
+          .getRawMany();
+      }
+
       async getWorstYear(make: string, model: string) {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
