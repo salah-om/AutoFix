@@ -9,18 +9,21 @@ const UpdateComplaint = () => {
   const [editingComplaint, setEditingComplaint] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const DESCRIPTION_MAX_LENGTH = 255;
 
-  // Form state for editing
   const [formData, setFormData] = useState({
     issue: '',
     description: '',
     cost: ''
   });
 
+  const charCount = formData.description.length;
+
   useEffect(() => {
     fetchUserComplaints();
   }, []);
 
+  
   const fetchUserComplaints = async () => {
     try {
       setLoading(true);
@@ -37,6 +40,7 @@ const UpdateComplaint = () => {
     }
   };
 
+  
   const handleEditClick = (complaint) => {
     setEditingComplaint(complaint);
     setFormData({
@@ -118,7 +122,8 @@ const UpdateComplaint = () => {
         </h2>
 
         <div className="complaint-holder2" style={{ background: "#e2e2e2", borderRadius: "12px", padding: "3%" }}>
-          {userComplaints.length === 0 ? (
+          {userComplaints.length === 0 ? 
+          (
             <div>
               <p>No complaints made yet.</p>
               <button 
@@ -135,33 +140,42 @@ const UpdateComplaint = () => {
                   <h3>Editing: {editingComplaint.vehicle.make} {editingComplaint.vehicle.model} ({editingComplaint.vehicle.year})</h3>
                   
                   <label>Issue:</label>
-                  <input
-                    type="text"
-                    name="issue"
-                    value={formData.issue}
-                    onChange={handleInputChange}
-                    required
-                  />
+                    <div>
+                      <input
+                        type="text"
+                        name="issue"
+                        value={formData.issue}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
 
                   <label>Description:</label>
-                  <textarea
-                    name="description"
-                    value={formData.description}
-                    onChange={handleInputChange}
-                    required
-                  />
+                    <div>
+                      <textarea
+                        style = {{width: "42%"}}
+                        name="description"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                        maxLength={DESCRIPTION_MAX_LENGTH}
+                        required
+                      />
+                      {charCount}/{DESCRIPTION_MAX_LENGTH}
+                    </div>
 
-                  <label>Cost:</label>
-                  <input
-                    type="text"
-                    name="cost"
-                    value={formData.cost}
-                    onChange={handleInputChange}
-                    required
-                  />
+                  <label>Cost ($):</label>
+                    <div>
+                      <input
+                        type="text"
+                        name="cost"
+                        value={formData.cost}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
 
-                  <div style={{ marginTop: '1rem' }}>
-                    <button type="submit">Save Changes</button>
+                  <div>
+                    <button className ='add-veh-btn' type="submit">Save Changes</button>
                     <button type="button" onClick={handleCancelEdit} style={{ marginLeft: '1rem' }}>
                       Cancel
                     </button>
