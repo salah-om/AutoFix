@@ -7,6 +7,7 @@ const AddComplaint = () => {
   const [makes, setMakes] = useState([]);
   const [models, setModels] = useState([]);
   const [years, setYears] = useState([]);
+  const DESCRIPTION_MAX_LENGTH = 255;
 
   const [complaint, setComplaint] = useState({
     make: '',
@@ -16,6 +17,8 @@ const AddComplaint = () => {
     description: '',
     cost: ''
   });
+
+  const charCount = complaint.description.length;
 
   useEffect(() => {
     fetchMakes();
@@ -55,6 +58,12 @@ const AddComplaint = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (complaint.description.length > DESCRIPTION_MAX_LENGTH) {
+      alert(`Description cannot exceed ${DESCRIPTION_MAX_LENGTH} characters. Currently at ${complaint.description.length} characters.`);
+      return;
+    }
+
     try {
       const vehicleRes = await http.get(
         `/vehicles?make=${complaint.make}&model=${complaint.model}&year=${complaint.year}`
@@ -139,10 +148,11 @@ const AddComplaint = () => {
 
             <label>5. Describe what happened with the car below:</label>
             <div>
-              <textarea name="description" style = {{width: "42%"}}value={complaint.description} onChange={handleChange} required />
+              <textarea name="description" style = {{width: "42%"}} value={complaint.description} maxLength={DESCRIPTION_MAX_LENGTH} onChange={handleChange} required />
+              {charCount}/{DESCRIPTION_MAX_LENGTH}
             </div>
 
-            <label>6. How much did/does it cost to fix?</label>
+            <label>6. How much did it cost? ($)</label>
             <div>
               <input type="text" name="cost" style = {{width: "22%"}} value={complaint.cost} onChange={handleChange} required />
             </div>
