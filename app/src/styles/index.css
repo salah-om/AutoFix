@@ -916,3 +916,56 @@ p {
 .fixGuide-card:hover .fixGuide-arrow {
   transform: translateX(3px);
 }
+/* Car Rankings Container */
+.car-rankings-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
+/* Ranking Box Styling */
+.car-ranking-box {
+  flex: 1;
+  background-color: #FF8C00; /* Orange */
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.car-ranking-box h3 {
+  color: white;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Car Item Styling */
+.car-ranking-item {
+  background-color: #000; /* Black */
+  color: white;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
+
+.car-ranking-item h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  color: #cdbabe; /* Orange */
+}
+
+.car-ranking-item p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .car-rankings-container {
+    flex-direction: column;
+  }
+}
