@@ -56,7 +56,6 @@ const UsersForm = () => {
         setUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
     
-
     /*
     -----------------------------------------------------------------------
       Purpose: Updates User Data user is editing.
@@ -76,7 +75,6 @@ const UsersForm = () => {
             console.error("Error updating user:", error);
         }
     };
-
 
     return (
         <>
