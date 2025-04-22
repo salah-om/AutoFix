@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAdminDashboardStats } from "../services/DashboardService";
+import { getAdminDashboardStats } from "../../services/DashboardService";
 import { FaAngry, FaCar, FaUser, FaWrench } from "react-icons/fa";
 import { BsShieldLock } from "react-icons/bs";
 

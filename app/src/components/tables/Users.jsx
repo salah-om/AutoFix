@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import RespSidebar from "./RespSidebar";
-import http from "../http-common";
+import RespSidebar from "../sidebars/RespSidebar";
+import http from "../../http-common";
 
 
 const Users = () => {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import Menu from "./Menu";
-import Footer from "./Footer";
+import Menu from "./sidebars/Menu";
+import Footer from "./sidebars/Footer";
 
 const Models = () => {
   const { make } = useParams();

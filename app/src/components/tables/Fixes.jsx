@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import http from "../http-common";
-import MechSidebar from "./MechSidebar";
+import http from "../../http-common";
+import MechSidebar from "../sidebars/MechSidebar";
 
 const Fixes = () => {
     const [fixes, setFixes] = useState([]);

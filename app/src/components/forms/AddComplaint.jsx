@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import Menu from "./Menu";
-import Footer from "./Footer";
-import http from "../http-common";
+import { getMakes, getModels, getYears, findVehicle } from "../../services/VehicleService"
+import { submitComplaint } from "../../services/ComplaintService"
+import Menu from "../sidebars/Menu";
+import Footer from "../sidebars/Footer";
 
 const AddComplaint = () => {
   const [makes, setMakes] = useState([]);
@@ -21,33 +22,63 @@ const AddComplaint = () => {
   const charCount = complaint.description.length;
 
   useEffect(() => {
-    fetchMakes();
+    loadMakes();
   }, []);
 
   useEffect(() => {
-    if (complaint.make) {
-      fetchModels(complaint.make);
-    }
-    if (complaint.make && complaint.model) {
-      fetchYears(complaint.make, complaint.model);
-    }
+    loadModelsAndYears();
   }, [complaint.make, complaint.model]);
 
-  const fetchMakes = async () => {
-    const res = await http.get('/vehicles/makes');
-    setMakes(res.data);
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Loads car makes.
+      Parameters: None.
+      Postcondition: Sets the JSON data to makes to load them for the user.
+    -----------------------------------------------------------------------
+    */
+  const loadMakes = async () => {
+    try {
+      const makesData = await getMakes();
+      setMakes(makesData);
+    } catch(error) {
+      console.error("Error loading makes:", error);
+    }
   };
 
-  const fetchModels = async (make) => {
-    const res = await http.get(`/vehicles/models/${make}`);
-    setModels(res.data);
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Loads car models and years.
+      Parameters: None.
+      Postcondition: Sets the JSON data to models and years based on make.
+    -----------------------------------------------------------------------
+    */
+  const loadModelsAndYears = async () => {
+    if (complaint.make) {
+      try {
+        const modelsData = await getModels(complaint.make);
+        setModels(modelsData);
+      } catch (error) {
+        console.error("Error loading models:", error);
+      }
+    }
+    
+    if (complaint.make && complaint.model) {
+      try {
+        const yearsData = await getYears(complaint.make, complaint.model);
+        setYears(yearsData);
+      } catch (error) {
+        console.error("Error loading years:", error);
+      }
+    }
   };
 
-  const fetchYears = async (make, model) => {
-    const res = await http.get(`/vehicles/years/${make}/${model}`);
-    setYears(res.data);
-  };
-
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles change in data.
+      Parameters: Event.
+      Postcondition: Updates component state from input values.
+    -----------------------------------------------------------------------
+    */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setComplaint((prev) => ({
@@ -56,6 +87,13 @@ const AddComplaint = () => {
     }));
   };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handle submission of complaint.
+      Parameters: Event.
+      Postcondition: Updates component state from input values.
+    -----------------------------------------------------------------------
+    */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -65,27 +103,27 @@ const AddComplaint = () => {
     }
 
     try {
-      const vehicleRes = await http.get(
-        `/vehicles?make=${complaint.make}&model=${complaint.model}&year=${complaint.year}`
+      const vehicle = await findVehicle(
+        complaint.make, 
+        complaint.model, 
+        complaint.year
       );
       
-      if (!vehicleRes.data || !vehicleRes.data[0]) {
+      if (!vehicle) {
         alert("No matching vehicle found.");
         return;
       }
 
-      await http.post('/complaints', {
-        vehicleId: vehicleRes.data[0].id,
-        issue: complaint.issue,
-        description: complaint.description,
-        cost: complaint.cost
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        }
-      });
+      await submitComplaint(
+        {
+          vehicleId: vehicle.id,
+          issue: complaint.issue,
+          description: complaint.description,
+          cost: complaint.cost
+        },
+        localStorage.getItem('token')
+      );
 
-      alert("Complaint submitted successfully!");
       setComplaint({
         make: '',
         model: '',
@@ -94,10 +132,12 @@ const AddComplaint = () => {
         description: '',
         cost: ''
       });
-
-    } catch (err) {
-      alert("Failed to submit complaint.");
-    }
+      
+      alert("Complaint submitted successfully!");
+    } catch (error) {
+      console.error("Submission error:", error);
+      alert("Failed to submit complaint. Please try again.");
+    } 
   };
 
   return (

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Menu from "./Menu";
-import Footer from "./Footer";
-import http from "../http-common";
+import Menu from "../sidebars/Menu";
+import Footer from "../sidebars/Footer";
+import http from "../../http-common";
 
 const UpdateComplaint = () => {
   const [userComplaints, setUserComplaints] = useState([]);

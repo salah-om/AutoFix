@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import http from '../http-common';
-import Menu from './Menu';
-import Footer from './Footer';
+import Menu from "./sidebars/Menu";
+import Footer from "./sidebars/Footer";
 
 const News = () => {
     const [newsData, setNewsData] = useState([]);

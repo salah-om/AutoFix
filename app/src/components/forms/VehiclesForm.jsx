@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../../http-common";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { IoCaretBackCircle } from "react-icons/io5";

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { getMechanicDashboardStats } from "../services/DashboardService";
+import { getMechanicDashboardStats } from "../../services/DashboardService";
 import { FaAngry, FaHammer, FaHeadset } from "react-icons/fa";
-import "../styles/index.css"; 
-
 
 const MechanicDash = () => {
     const [stats, setStats] = useState({

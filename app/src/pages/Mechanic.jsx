@@ -1,5 +1,5 @@
-import MechanicDash from "../components/MechanicDash";
-import MechSidebar from "../components/MechSidebar";
+import MechanicDash from "../components/dashboards/MechanicDash";
+import MechSidebar from "../components/sidebars/MechSidebar";
 
 const Mechanic = () => {
     return (

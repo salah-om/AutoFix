@@ -1,5 +1,5 @@
-import Menu from "../components/Menu";
-import Footer from "../components/Footer";
+import Menu from "../components/sidebars/Menu";
+import Footer from "../components/sidebars/Footer";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import http from "../http-common";

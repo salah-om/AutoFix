@@ -1,7 +1,6 @@
-import RespSidebar from "./RespSidebar";
 import { useState, useEffect } from "react";
-import http from "../http-common";
-
+import http from "../../http-common";
+import RespSidebar from "../sidebars/RespSidebar";
 const Vehicles = () => {
 
   const [vehicles, setVehicles] = useState([]);

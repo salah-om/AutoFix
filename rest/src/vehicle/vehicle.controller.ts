@@ -15,7 +15,7 @@ export class VehicleController {
     @UseInterceptors(
     FileInterceptor('imgurl', {
       storage: diskStorage({
-        destination: './public', // Make sure this folder exists
+        destination: './public',
         filename: (req, file, cb) => {
           cb(null, file.originalname);
         },

@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import Menu from "./Menu";
-import Footer from "./Footer";
-import { getVehicleYears, getWorstYear, getComplaintsByYear, getWorstProblems, getAllComplaints } from "../services/ModelSummaryService";
+import Menu from "./sidebars/Menu";
+import Footer from "./sidebars/Footer";
+import { getWorstYear, getComplaintsByYear, getWorstProblems, getAllComplaints } from "../services/ComplaintService";
+import { getYears } from "../services/VehicleService";
 import ComplaintList from "./ComplaintList";
 
 const ModelSummary = () => {

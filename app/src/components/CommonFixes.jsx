@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Menu from "./Menu";
-import Footer from "./Footer";
+import Menu from "./sidebars/Menu";
+import Footer from "./sidebars/Footer";
 import http from "../http-common";
 
 const CommonFixes = () => {

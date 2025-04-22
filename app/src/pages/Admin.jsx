@@ -1,5 +1,5 @@
-import AdminDash from "../components/AdminDash";
-import RespSidebar from "../components/RespSidebar";
+import AdminDash from "../components/dashboards/AdminDash";
+import RespSidebar from "../components/sidebars/RespSidebar";
 
 const Admin = () => {
   
