@@ -1,18 +1,16 @@
-import http from "../../http-common";
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { IoCaretBackCircle } from "react-icons/io5";
+import { getUserById, updateUser } from "../../services/UserService";
 
 const UsersForm = () => {
-
     const { id } = useParams();
     const navigate = useNavigate();
-    const [user,setUser]= useState({
-         username:'',
-         email:'',
-         role:''
-        }
-    )
+    const [user, setUser]= useState({
+      username:'',
+      email:'',
+      role:''
+    });
 
     useEffect(() => {
         if (id) {
@@ -20,29 +18,59 @@ const UsersForm = () => {
         }
     }, [id]);
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Fetches user by id.
+      Parameters: user id.
+      Postcondition: Sets the JSON data to setUser.
+    -----------------------------------------------------------------------
+    */
     const fetchUserById = async (userId) => {
         try {
-            const response = await http.get(`/users/${userId}`);
-            setUser(response.data); 
+          const userData = await getUserById(userId);
+          console.log('User data:', userData); 
+          
+          if (!userData) {
+            throw new Error('No user data received');
+          }
+      
+          setUser({
+            username: userData.username || '',
+            email: userData.email || '',
+            role: userData.role || 'Visitor'
+          });
         } catch (e) {
-            console.error("Error fetching user data:", e);
+          console.error("Error fetching user:", e);
         }
-    };
+      };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles change in data.
+      Parameters: Event.
+      Postcondition: Updates component state from input values.
+    -----------------------------------------------------------------------
+    */
     const handleChange = (event) => {
         const { name, value } = event.target;
         setUser((prevUser) => ({ ...prevUser, [name]: value }));
     };
     
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Updates User Data user is editing.
+      Parameters: Event.
+      Postcondition: Updates user.
+    -----------------------------------------------------------------------
+    */
     const saveUser = async (event) => {
         event.preventDefault();
 
         try {
             if (id) {
-            await http.patch(`/users/${id}`, user);
+              await updateUser(id, user);
             }
-
             navigate('/admin/users');
         } catch(error) {
             console.error("Error updating user:", error);
@@ -61,11 +89,11 @@ const UsersForm = () => {
             <form onSubmit={saveUser}>
                 <div className="form-group">
                     <label style={{color: "#fc9c00"}}> Username</label>
-                    <input onChange={(event) => handleChange('username', event.target.value)} type="text" className="form-control" placeholder="Username" name ="username" value={user.username}/>
+                    <input onChange={handleChange} type="text" className="form-control" placeholder="Username" name ="username" value={user.username}/>
                 </div>
                 <div className="form-group">
                     <label style={{color: "#fc9c00"}}>Email</label>
-                    <input onChange={(event) => handleChange('email', event.target.value)} type="text" className="form-control" placeholder="Email" name ="email" value={user.email}/>
+                    <input onChange={handleChange} type="text" className="form-control" placeholder="Email" name ="email" value={user.email}/>
                 </div>
 
                 <div className="form-check">
