@@ -91,7 +91,7 @@ const AddComplaint = () => {
     -----------------------------------------------------------------------
       Purpose: Handle submission of complaint.
       Parameters: Event.
-      Postcondition: Updates component state from input values.
+      Postcondition: Submits complaint aboout a vehicle.
     -----------------------------------------------------------------------
     */
   const handleSubmit = async (e) => {

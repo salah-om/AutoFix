@@ -1,36 +1,65 @@
 import { useEffect, useState } from "react";
-import http from "../../http-common";
+import { useNavigate } from "react-router-dom";
 import MechSidebar from "../sidebars/MechSidebar";
+import { getAllFixes, deleteFix } from "../../services/FixService";
 
 const Fixes = () => {
     const [fixes, setFixes] = useState([]);
-    
-    useEffect(()=>{
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
         fetchFixes();
     }, []);
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Retrieves all fixes from the API
+      Postcondition: Updates component state with fix data
+    -----------------------------------------------------------------------
+    */
     const fetchFixes = async () => {
         try {
-            const response = await http.get("/fixes");
-            setFixes(response?.data);
-        } catch (e) {
-            alert('Route not found'+e);
+            setLoading(true);
+            const data = await getAllFixes();
+            setFixes(data);
+        } catch (err) {
+            console.error("Failed to load fixes:", err);
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles navigation to edit form
+      Parameters: id - The fix ID to edit
+      Postcondition: Navigates to edit route
+    -----------------------------------------------------------------------
+    */
     const handleEdit = (id) => {
-        window.location.href = `/mechanic/fixes/edit-form/${id}`;
+        navigate(`/mechanic/fixes/edit-form/${id}`);
     };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles deletion of a fix
+      Parameters: id - The ID of the fix to delete
+      Postcondition: Updates state to remove deleted fix
+    -----------------------------------------------------------------------
+    */
     const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this fix?")) return;
+        
         try {
-            await http.delete(`/fixes/${id}`);
-            setFixes(fixes.filter(fix => fix.id !== id)); 
-        } catch (e) {
-            alert('Error deleting fix: ' + e);
+            await deleteFix(id);
+            setFixes(prev => prev.filter(fix => fix.id !== id));
+        } catch (err) {
+            alert(`Failed to delete fix: ${err.message}`);
         }
     };
 
+    if (loading) return <div>Loading fixes...</div>;
 
     return (
         <>
@@ -51,7 +80,6 @@ const Fixes = () => {
                         fixes.map((fix)=>{
                             return(
                                 <tr key={fix.id}>
-                                    
                                     <td>{fix?.id}</td>
                                     <td>{fix?.issue}</td>
                                     <td>{fix?.description}</td>

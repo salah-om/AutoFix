@@ -13,7 +13,7 @@ import UsersForm from './components/forms/UsersForm';
 import VehiclesForm from './components/forms/VehiclesForm';
 import FixesForm from './components/forms/FixesForm';
 import AddComplaint from './components/forms/AddComplaint';
-import UpdateComplaint from './components/forms/AddComplaint';
+import UpdateComplaint from './components/forms/UpdateComplaint';
 import PrivateRoute from './components/PrivateRoute';
 import Unauthorized from './pages/Unauthorized';
 import Models from './components/Models';

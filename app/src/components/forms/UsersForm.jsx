@@ -60,7 +60,7 @@ const UsersForm = () => {
     -----------------------------------------------------------------------
       Purpose: Updates User Data user is editing.
       Parameters: Event.
-      Postcondition: Updates user.
+      Postcondition: Updates user and navigates to list view.
     -----------------------------------------------------------------------
     */
     const saveUser = async (event) => {

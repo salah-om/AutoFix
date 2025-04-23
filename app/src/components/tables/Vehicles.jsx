@@ -1,35 +1,65 @@
 import { useState, useEffect } from "react";
-import http from "../../http-common";
+import { useNavigate } from "react-router-dom";
 import RespSidebar from "../sidebars/RespSidebar";
-const Vehicles = () => {
+import { getAllVehicles, deleteVehicle } from "../../services/VehicleService";
 
-  const [vehicles, setVehicles] = useState([]);
-      
-      useEffect(()=>{
-          fetchVehicles();
-      }, []);
-  
-      const fetchVehicles = async () => {
-          try {
-              const response = await http.get("/vehicles");
-              setVehicles(response?.data);
-          } catch (e) {
-              alert('Route not found'+e);
-          }
-      }
-  
-      const handleEdit = (id) => {
-          window.location.href = `/admin/vehicles/edit-form/${id}`;
-      };
-  
-      const handleDelete = async (id) => {
-          try {
-              await http.delete(`/vehicles/${id}`);
-              setVehicles(vehicles.filter(vehicle => vehicle.id !== id)); 
-          } catch (e) {
-              alert('Error deleting vehicle: ' + e);
-          }
-      };
+const Vehicles = () => {
+    const [vehicles, setVehicles] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchVehicles();
+    }, []);
+
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Retrieves all vehicles from the API
+      Postcondition: Updates component state with vehicle data
+    -----------------------------------------------------------------------
+    */
+    const fetchVehicles = async () => {
+        try {
+            setLoading(true);
+            const data = await getAllVehicles();
+            setVehicles(data);
+        } catch (err) {
+            console.error("Failed to load vehicles:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles navigation to edit form
+      Parameters: id - The vehicle ID to edit
+      Postcondition: Navigates to edit route
+    -----------------------------------------------------------------------
+    */
+    const handleEdit = (id) => {
+        navigate(`/admin/vehicles/edit-form/${id}`);
+    };
+
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles deletion of a vehicle
+      Parameters: id - The ID of the vehicle to delete
+      Postcondition: Updates state to remove deleted vehicle
+    -----------------------------------------------------------------------
+    */
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this vehicle?")) return;
+        
+        try {
+            await deleteVehicle(id);
+            setVehicles(prev => prev.filter(vehicle => vehicle.id !== id));
+        } catch (err) {
+            alert(`Failed to delete vehicle: ${err.message}`);
+        }
+    };
+
+    if (loading) return <div>Loading vehicles...</div>;
 
     return (
       <>

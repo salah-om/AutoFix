@@ -16,6 +16,13 @@ const AdminDash = () => {
         fetchStats();
     }, []);
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Fetches dashboard stats.
+      Parameters: None.
+      Postcondition: Sets the JSON data to stats to display to the user.
+    -----------------------------------------------------------------------
+    */
     async function fetchStats() {
         const data = await getAdminDashboardStats();
         if (data) setStats(data);

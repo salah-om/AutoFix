@@ -2,22 +2,30 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Menu from "./sidebars/Menu";
 import Footer from "./sidebars/Footer";
+import { getModels } from "../services/VehicleService";
 
 const Models = () => {
   const { make } = useParams();
   const [models, setModels] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/vehicles/models/${make}`)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(`Fetched models for ${make}:`, data);
-        setModels(data);
-      })
-      .catch((err) => {
-        console.error("Error fetching models:", err);
-      });
+    loadModels();
   }, [make]);
+
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Retrieves all models for a car make from the API
+      Postcondition: Updates component state with models data with image
+    -----------------------------------------------------------------------
+    */
+  const loadModels = async () => {
+    try {
+        const modelData = await getModels(make);
+        setModels(modelData);
+    } catch (err) {
+        console.error("Error loading models:", err);
+    }
+};
 
   return (
     <>

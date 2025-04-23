@@ -1,5 +1,12 @@
 import {useState, useEffect} from "react"
 
+/*
+----------------------------------------------------------------------------------
+  Purpose: Custom hook for fetching data from a given URL
+  Param: url (string) - API endpoint or resource location
+  Return:  Object containing: JSON, Loading and error
+----------------------------------------------------------------------------------
+*/
 export function useFetch(url){
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);

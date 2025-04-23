@@ -3,7 +3,13 @@ import { authenticate, signUp } from "../services/UserService";
 import { setRole, setToken } from "../utility/Utility";
 import { useNavigate } from "react-router-dom";
 
-
+/*
+----------------------------------------------------------------------------------
+  Purpose: Login page allows user to navigate to each view based on role
+  Return:  - Validation of user credentials 
+           - Navigation to specific views
+----------------------------------------------------------------------------------
+*/
 const Login = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(true); 
@@ -16,10 +22,24 @@ const Login = () => {
 
     const [error, setError] = useState("");
 
+  /*
+  -----------------------------------------------------------------------
+    Purpose: Handles change in data.
+    Parameters: Event.
+    Postcondition: Updates component state from input values.
+  -----------------------------------------------------------------------
+  */
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    /*
+    -------------------------------------------------------------------------
+      Purpose: Handle submission of login.
+      Parameters: Event.
+      Postcondition: Submits user credentials for validation and navigation.
+    -------------------------------------------------------------------------
+    */
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {

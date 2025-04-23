@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Menu from "./sidebars/Menu";
 import Footer from "./sidebars/Footer";
-import http from "../http-common";
+import { getAllFixes } from "../services/FixService";
 
 const CommonFixes = () => {
   const [fixes, setFixes] = useState([]);
@@ -11,10 +11,16 @@ const CommonFixes = () => {
     fetchFixes();
   }, []);
 
+  /*
+    -----------------------------------------------------------------------
+      Purpose: Retrieves all fixes from the API
+      Postcondition: Updates component state with fixes data
+    -----------------------------------------------------------------------
+    */
   const fetchFixes = async () => {
     try {
-      const response = await http.get("/fixes");
-      setFixes(response.data);
+      const data = await getAllFixes();
+      setFixes(data);
     } catch (error) {
       console.error("Error fetching fixes:", error);
     } finally {

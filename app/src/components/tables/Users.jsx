@@ -1,42 +1,80 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RespSidebar from "../sidebars/RespSidebar";
-import http from "../../http-common";
-
+import { getAllUsers, deleteUser } from "../../services/UserService";
 
 const Users = () => {
     const [users, setUsers] = useState([]);
-    
-    useEffect(()=>{
-        fetchUsers();
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        loadUsers();
     }, []);
 
-    const fetchUsers = async () => {
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Fetches users from API
+      Parameters: None.
+      Return: Sets the JSON data receieved to setUsers
+    -----------------------------------------------------------------------
+    */
+    const loadUsers = async () => {
         try {
-            const response = await http.get("/users");
-            setUsers(response?.data);
-        } catch (e) {
-            alert('Route not found'+e);
+            setLoading(true);
+            const usersData = await getAllUsers();
+            setUsers(usersData);
+        } catch (err) {
+            console.error("User fetch error:", err);
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles user edit navigation
+      Parameters: id - User ID to edit
+      Side Effects: Navigates to edit form
+    -----------------------------------------------------------------------
+    */
     const handleEdit = (id) => {
-        window.location.href = `/admin/users/edit-form/${id}`;
+        navigate(`/admin/users/edit-form/${id}`);
     };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles user deletion with confirmation
+      Parameters: id - User ID to delete
+      Side Effects: Updates local state on success
+    -----------------------------------------------------------------------
+    */
     const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this user?")) return;
+        
         try {
-            await http.delete(`/users/${id}`);
-            setUsers(users.filter(user => user.id !== id)); 
-        } catch (e) {
-            alert('Error deleting user: ' + e);
+            await deleteUser(id);
+            setUsers(prevUsers => prevUsers.filter(user => user.id !== id));
+        } catch (err) {
+            console.error("Delete user error:", err);
+            alert(err.response?.data?.message || "Failed to delete user");
         }
     };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Determines role display color
+      Parameters: role - User role string
+      Returns: Color code for styling
+    -----------------------------------------------------------------------
+    */
     const convertColor = (role) => {
-        if(role === "Visitor") return "green";
+        if (role === "Visitor") return "green";
         if (role === "Mechanic") return "orange";
         return "red";
-    }
+    };
+
+    if (loading) return <div>Loading users...</div>;
 
     return (
         <>
@@ -78,7 +116,7 @@ const Users = () => {
             </table>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Users;

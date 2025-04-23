@@ -1,3 +1,10 @@
+  /*
+    -----------------------------------------------------------------------
+      Purpose: Reusable component for displaying complaints
+      Param: JSON array of complaints and their title (issue)
+      Postcondition: Returns cards of complaints with username for each
+    -----------------------------------------------------------------------
+    */
 const ComplaintList = ({ complaints, title }) => {
     return (
         <>

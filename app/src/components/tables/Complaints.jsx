@@ -1,31 +1,52 @@
 import { useEffect, useState } from "react";
-import http from "../../http-common";
 import MechSidebar from "../sidebars/MechSidebar";
+import { getAllComplaints, deleteComplaint } from "../../services/ComplaintService";
 
 const Complaints = () => {
     const [complaints, setComplaints] = useState([]);
-    
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         fetchComplaints();
     }, []);
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Retrieves all complaints from the API
+      Postcondition: Updates component state with complaint data
+    -----------------------------------------------------------------------
+    */
     const fetchComplaints = async () => {
         try {
-            const response = await http.get("/complaints");
-            setComplaints(response?.data);
-        } catch (e) {
-            alert('Route not found: ' + e);
+            setLoading(true);
+            const data = await getAllComplaints();
+            setComplaints(data);
+        } catch (err) {
+            console.error("Failed to load complaints:", err);
+        } finally {
+            setLoading(false);
         }
     };
 
+    /*
+    -----------------------------------------------------------------------
+      Purpose: Handles deletion of a complaint
+      Parameters: id - The ID of the complaint to delete
+      Postcondition: Updates state to remove deleted complaint
+    -----------------------------------------------------------------------
+    */
     const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this complaint?")) return;
+        
         try {
-            await http.delete(`/complaints/${id}`);
-            setComplaints(complaints.filter(complaint => complaint.id !== id)); 
-        } catch (e) {
-            alert('Error deleting complaint: ' + e);
+            await deleteComplaint(id);
+            setComplaints(prev => prev.filter(complaint => complaint.id !== id));
+        } catch (err) {
+            alert(`Failed to delete complaint: ${err.message}`);
         }
     };
+
+    if (loading) return <div>Loading complaints...</div>;
 
     return (
         <>
@@ -59,7 +80,10 @@ const Complaints = () => {
                                 <td>${complaint.cost}</td>
                                 <td>{new Date(complaint.date).toLocaleDateString()}</td>
                                 <td> 
-                                    <button onClick={() => handleDelete(complaint.id)} className="btn btn-danger btn-sm mx-2">
+                                    <button 
+                                        onClick={() => handleDelete(complaint.id)} 
+                                        className="btn btn-danger btn-sm mx-2"
+                                    >
                                         <i className="bx bxs-trash"></i>
                                     </button>
                                 </td>

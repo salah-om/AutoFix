@@ -1,5 +1,10 @@
 import { Link } from "react-router-dom";
-
+/*
+---------------------------------------------------------------------------
+  Purpose: Displays ERROR 403 UNAUTHORIZED ACCESS page
+  Return: - Page with UNAUTHORIZED error that redirect user back to root.
+--------------------------------------------------------------------------
+ */
 const Unauthorized = () => {
     return (
         <>

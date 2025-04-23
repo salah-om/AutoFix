@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Menu from "./sidebars/Menu";
 import Footer from "./sidebars/Footer";
-import { getWorstYear, getComplaintsByYear, getWorstProblems, getAllComplaints } from "../services/ComplaintService";
+import { getWorstYear, getComplaintsByYear, getWorstProblems, getAllComplaintsForVehicle } from "../services/ComplaintService";
 import { getYears } from "../services/VehicleService";
 import ComplaintList from "./ComplaintList";
 
@@ -24,16 +24,22 @@ const ModelSummary = () => {
     fetchData();
   }, [make, model]);
 
+    /*
+    -----------------------------------------------------------------------------
+      Purpose: Fetch and set data related to vehicle complaints and worst years
+      Postcondition: Updates state with fetched vehicle-related data
+    ----------------------------------------------------------------------------
+    */
   const fetchData = async () => {
     try {
       setLoading(true);
       
       const [years, worstYear, complaintsByYear, worstProblems, allComplaints] = await Promise.all([
-        getVehicleYears(make, model),
+        getYears(make, model),
         getWorstYear(make, model),
         getComplaintsByYear(make, model),
         getWorstProblems(make, model),
-        getAllComplaints(make, model)
+        getAllComplaintsForVehicle(make, model)
       ]);
 
       const complaintsMap = complaintsByYear.reduce((acc, item) => {
@@ -57,6 +63,13 @@ const ModelSummary = () => {
     }
   };
 
+    /*
+    -----------------------------------------------------------------------------
+      Purpose: Handles filtering complaints based on selected year
+      Param: - string: Selected model year
+      Postcondition: Updates state with fetched vehicle-related data
+    ----------------------------------------------------------------------------
+    */
   const handleYearClick = (year) => {
     setSelectedYear(year);
     if (year === null) {

@@ -13,6 +13,13 @@ const MechanicDash = () => {
         fetchStats();
     }, []);
 
+   /*
+    -----------------------------------------------------------------------
+      Purpose: Fetches dashboard stats.
+      Parameters: None.
+      Postcondition: Sets the JSON data to stats to display to the user.
+    -----------------------------------------------------------------------
+    */
     async function fetchStats() {
         const data = await getMechanicDashboardStats();
         if (data) setStats(data);

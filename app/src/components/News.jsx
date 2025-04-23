@@ -1,35 +1,53 @@
-import { useEffect, useState } from 'react';
-import http from '../http-common';
+import { useEffect, useState } from "react";
+import { fetchVehicleNews } from "../services/NewsService";
 import Menu from "./sidebars/Menu";
 import Footer from "./sidebars/Footer";
 
+/*
+----------------------------------------------------------------------------------
+  Purpose: Displays latest automotive-related news using News API
+  Return:  - Shows loading while fetching data
+           - Lists fetched news articles in a formatted card layout
+----------------------------------------------------------------------------------
+*/
 const News = () => {
     const [newsData, setNewsData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    async function getNewsData() {
-        try {
-            setLoading(true);
-            const resp = await http.get("https://newsapi.org/v2/everything?q=vehicles&apiKey=780d2620d8de4c9fb8e11eeeae603969&pageSize=10");
-            setNewsData(resp.data.articles);
-        } catch (err) {
-            setError("Failed to load news. Please try again later.");
-            console.error("News fetch error:", err);
-        } finally {
-            setLoading(false);
-        }
-    }
 
     useEffect(() => {
         getNewsData();
     }, []);
 
+    /*
+    ----------------------------------------------------------------------------------
+      Purpose: Fetch and set automotive news articles from API
+      Postcondition: Updates state with fetched data or sets an error message
+    ----------------------------------------------------------------------------------
+    */
+    const getNewsData = async () => {
+        try {
+            setLoading(true);
+            const articles = await fetchVehicleNews();
+            setNewsData(articles);
+        } catch (err) {
+            console.error("News fetch error:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    /*
+    ----------------------------------------------------------------------------------
+      Purpose: Formats the data to make it look more pleasing
+      Param: - string: date
+      Postcondition: Updates state of data to clean format
+    ----------------------------------------------------------------------------------
+    */
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
+        return new Date(dateString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
         });
     };
 
@@ -37,24 +55,26 @@ const News = () => {
         <>
             <Menu />
             <div className="news-container">
-                <h1 className="news-header" style={{color: "white"}}>Latest Automotive News</h1>
-                
+                <h1 className="news-header" style={{ color: "white" }}>
+                    Latest Automotive News
+                </h1>
+
                 {loading ? (
-                    <div className="loading-spinner" style={{color: "white"}}>Loading news...</div>
-                ) : error ? (
-                    <div className="error-message">{error}</div>
+                    <div className="loading-spinner" style={{ color: "white" }}>
+                        Loading news...
+                    </div>
                 ) : (
                     <div className="news-grid">
                         {newsData.map((article, index) => (
                             <article key={index} className="news-card">
                                 {article.urlToImage && (
                                     <div className="news-image-container">
-                                        <img 
-                                            src={article.urlToImage} 
+                                        <img
+                                            src={article.urlToImage}
                                             alt={article.title}
                                             className="news-image"
                                             onError={(e) => {
-                                                e.target.src = '/default-news.jpg'; // Fallback image
+                                                e.target.src = "/default-news.jpg"; // Fallback image
                                             }}
                                         />
                                     </div>
@@ -71,10 +91,10 @@ const News = () => {
                                         </a>
                                     </h2>
                                     <p className="news-description">{article.description}</p>
-                                    <a 
-                                        href={article.url} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer" 
+                                    <a
+                                        href={article.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className="read-more"
                                     >
                                         Read Full Story →
@@ -84,11 +104,11 @@ const News = () => {
                         ))}
                     </div>
                 )}
-                <h1 className='news-header'></h1>
+                <h1 className="news-header"></h1>
             </div>
             <Footer />
         </>
     );
-}
- 
+};
+
 export default News;
