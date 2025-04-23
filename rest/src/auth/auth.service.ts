@@ -14,6 +14,15 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Validates user credentials by checking email and password match
+        Param: 
+          - email (string) -> User email
+          - pass (string) -> User password
+        Return: User object without password if validation is successful, otherwise null
+      ----------------------------------------------------------------------------------
+    */
     async validateUser(email: string, pass: string): Promise<any> {
         const user = await this.usersRepository.findOne({ where: { email } });
         
@@ -25,6 +34,15 @@ export class AuthService {
         return null;
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Authenticates user and generates JWT token upon successful login
+        Param: 
+          - email (string) -> User email
+          - password (string) -> User password
+        Return: Object containing access token and authenticated user details
+      ----------------------------------------------------------------------------------
+    */
     async login(email: string, password: string) {
         const user = await this.validateUser(email, password);
         if (!user) {
@@ -37,6 +55,13 @@ export class AuthService {
         };
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Registers a new user and returns generated authentication token
+        Param: signUpDto (SignUpDto) -> DTO containing user registration details
+        Return: Object containing authentication token for newly registered user
+      ----------------------------------------------------------------------------------
+    */
     async signUp(signUpDto: SignUpDto): Promise<{ token: string }> {
         const { username, email, password, role} = signUpDto;
         console.log(username, email, password, role);

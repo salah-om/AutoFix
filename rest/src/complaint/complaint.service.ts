@@ -16,6 +16,15 @@ export class ComplaintService {
         private readonly vehicleService: VehicleService,
       ) {}
     
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Creates a new complaint entry
+        Param:
+          - userId (number) -> ID of the user submitting the complaint
+          - createComplaintDto (CreateComplaintDto) -> DTO containing complaint details
+        Return: Newly created complaint entry
+      ----------------------------------------------------------------------------------
+    */
       async create(userId: number, createComplaintDto: CreateComplaintDto): Promise<Complaint> {
         const { vehicleId, issue, description, cost } = createComplaintDto;
 
@@ -37,17 +46,35 @@ export class ComplaintService {
         return await this.complaintsRepository.save(complaint);
       }
       
-    
+     /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves all complaints with user and vehicle details
+        Return: Array of complaints with relations included
+      ----------------------------------------------------------------------------------
+    */
       async findAll(): Promise<Complaint[]> {
         return this.complaintsRepository.find({
           relations: ['user', 'vehicle'], 
       });
       }
     
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves a complaint by its ID
+        Param: id (number) -> Complaint ID
+        Return: Complaint entry if found, otherwise null
+      ----------------------------------------------------------------------------------
+    */
       async findOne(id: number): Promise<Complaint | null> {
         return this.complaintsRepository.findOneBy({ id: id });
       }
 
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the best-rated cars based on complaint severity and repair costs
+        Return: Array of top-ranked cars with low complaint severity
+      ----------------------------------------------------------------------------------
+      */
       async getBestCars() {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
@@ -68,6 +95,12 @@ export class ComplaintService {
           .getRawMany();
       }
 
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the worst-rated cars based on complaint severity and repair costs
+        Return: Array of worst-ranked cars with high complaint severity
+      ----------------------------------------------------------------------------------
+      */
       async getWorstCars() {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
@@ -87,6 +120,15 @@ export class ComplaintService {
           .getRawMany();
       }
 
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the worst model year based on complaints for a specific make and model
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Return: Object containing worst year and complaint count
+      ----------------------------------------------------------------------------------
+      */
       async getWorstYear(make: string, model: string) {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
@@ -101,6 +143,15 @@ export class ComplaintService {
           .getRawOne();
       }
       
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves complaints grouped by year for a given make and model
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Return: Array of complaints grouped by year
+      ----------------------------------------------------------------------------------
+      */
       async getComplaintsByYear(make: string, model: string) {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
@@ -113,6 +164,15 @@ export class ComplaintService {
           .getRawMany();
       }
       
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the worst problems reported for a specific make and model
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Return: Array of worst problems sorted by cost
+      ----------------------------------------------------------------------------------
+      */
       async getWorstProblems(make: string, model: string) {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
@@ -130,6 +190,15 @@ export class ComplaintService {
           .getRawMany();
       }
 
+      /*  
+        ----------------------------------------------------------------------------------
+          Purpose: Retrieves all complaints for a specific vehicle make and model
+          Param:
+            - make (string) -> Vehicle make
+            - model (string) -> Vehicle model
+          Return: Array of complaints related to the given make and model, ordered by most recent
+        ----------------------------------------------------------------------------------
+      */
       async getComplaintsByMakeModel(make: string, model: string) {
         return this.complaintsRepository.find({
           where: {
@@ -145,6 +214,13 @@ export class ComplaintService {
         });
       }
 
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves all complaints submitted by a specific user
+        Param: userId (number) -> ID of the user whose complaints are being retrieved
+        Return: Array of complaints associated with the user, ordered by most recent
+      ----------------------------------------------------------------------------------
+      */
       async getComplaintsByUser(userId: number) {
         return this.complaintsRepository.find({
           where: { user: { id: userId } },
@@ -153,6 +229,15 @@ export class ComplaintService {
         });
       }
 
+      /*  
+        ----------------------------------------------------------------------------------
+          Purpose: Retrieves a specific complaint for a user
+          Param: 
+            - id (number) -> Complaint ID
+            - userId (number) -> ID of the user submitting the complaint
+          Return: Complaint entry if found, otherwise null
+        ----------------------------------------------------------------------------------
+      */
       async findOneForUser(id: number, userId: number) {
         return this.complaintsRepository.findOne({
           where: {
@@ -163,6 +248,15 @@ export class ComplaintService {
         });
       }
 
+      /*  
+        ----------------------------------------------------------------------------------
+          Purpose: Searches complaints based on a query string
+          Param:
+            - query (string) -> Search keyword for complaints
+            - limit (number) -> Maximum number of results to return
+          Return: Array of complaints matching the search criteria, ordered by most recent
+        ----------------------------------------------------------------------------------
+      */
       async searchComplaints(query: string, limit: number) {
         return this.complaintsRepository
           .createQueryBuilder('complaint')
@@ -176,6 +270,15 @@ export class ComplaintService {
           .getMany();
       }
     
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Updates complaint details
+        Param:
+          - id (number) -> Complaint ID
+          - updateComplaintDto (UpdateComplaintDto) -> DTO containing updated complaint details
+        Return: Updated complaint entry
+      ----------------------------------------------------------------------------------
+      */
       async update(id: number, updateComplaintDto: UpdateComplaintDto): Promise<Complaint>{
         const complaint = await this.complaintsRepository.findOneBy({ id });
         if (!complaint) {
@@ -190,12 +293,19 @@ export class ComplaintService {
           complaint.description = updateComplaintDto.description;
         }
         if (updateComplaintDto.cost !== undefined) {
-        complaint.cost = updateComplaintDto.cost; // Stays as string
+        complaint.cost = updateComplaintDto.cost; 
         }
 
         return this.complaintsRepository.save(complaint);
       }
 
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Deletes a complaint entry
+        Param: id (number) -> Complaint ID
+        Postcondition: Complaint entry is removed from the database
+      ----------------------------------------------------------------------------------
+      */
       async delete(id: number): Promise<void> {
         await this.complaintsRepository.delete(id);
       }

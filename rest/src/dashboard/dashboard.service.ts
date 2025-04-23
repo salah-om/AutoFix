@@ -16,6 +16,18 @@ export class DashboardService {
     @InjectRepository(Fix) private fixRepo: Repository<Fix>,
   ) {}
 
+  /*  
+    ----------------------------------------------------------------------------------
+      Purpose: Retrieves statistical data for the admin dashboard, including user roles 
+               and complaint counts
+      Return: Object containing:
+              - totalUsers (number) -> Total number of registered users
+              - totalMechanics (number) -> Total number of mechanics
+              - totalAdmins (number) -> Total number of administrators
+              - totalVehicles (number) -> Total number of registered vehicles
+              - totalComplaints (number) -> Total number of submitted complaints
+    ----------------------------------------------------------------------------------
+  */
   async getAdminDashboardStats() {
     const totalUsers = await this.userRepo.count();
     const totalMechanics = await this.userRepo.count({ where: { role: 'Mechanic' } });
@@ -26,6 +38,15 @@ export class DashboardService {
     return { totalUsers, totalMechanics, totalAdmins, totalVehicles, totalComplaints };
   }
 
+  /*  
+    ----------------------------------------------------------------------------------
+      Purpose: Retrieves statistical data for the mechanic dashboard, including complaints
+               and fixes
+      Return: Object containing:
+              - totalComplaints (number) -> Total number of complaints logged
+              - totalFixes (number) -> Total number of fixes recorded
+    ----------------------------------------------------------------------------------
+  */
   async getMechanicDashboardStats() {
     const totalComplaints = await this.complaintRepo.count();
     const totalFixes = await this.fixRepo.count();

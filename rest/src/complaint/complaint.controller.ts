@@ -10,6 +10,16 @@ export class ComplaintController {
     constructor(private readonly complaintService: ComplaintService) {
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Creates a new complaint entry
+        Route: POST /complaints
+        Param:
+          - req (Request) -> Request object containing authenticated user ID
+          - createComplaintDto (CreateComplaintDto) -> DTO containing complaint details
+        Postcondition: Returns the newly created complaint
+      ----------------------------------------------------------------------------------
+    */
     @UseGuards(JwtAuthGuard)
     @Post()
     create(@Request() req, @Body() createComplaintDto: CreateComplaintDto) {
@@ -18,11 +28,26 @@ export class ComplaintController {
         return this.complaintService.create(userId, createComplaintDto);
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves all complaints with user and vehicle details
+        Route: GET /complaints
+        Postcondition: Returns an array of complaints
+      ----------------------------------------------------------------------------------
+    */
     @Get()
     findAll(): Promise<Complaint[]> {
         return this.complaintService.findAll();
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves complaints for the authenticated user
+        Route: GET /complaints/user
+        Param: req (Request) -> Request object containing authenticated user ID
+        Postcondition: Returns an array of complaints linked to the user
+      ----------------------------------------------------------------------------------
+    */
     @Get('user')
     @UseGuards(JwtAuthGuard)
     async getUserComplaints(@Req() req) {
@@ -30,6 +55,16 @@ export class ComplaintController {
         return this.complaintService.getComplaintsByUser(userId);
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Searches complaints based on a query string
+        Route: GET /complaints/search
+        Param:
+          - query (string) -> Search keyword for complaints
+          - limit (number) -> Maximum number of results to return
+        Postcondition: Returns matching complaints based on the query
+      ----------------------------------------------------------------------------------
+    */
     @Get('search')
     async searchComplaints(
     @Query('query') query: string,
@@ -41,36 +76,98 @@ export class ComplaintController {
         return this.complaintService.searchComplaints(query, limit);
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the best-ranked cars based on complaint analysis
+        Route: GET /complaints/top-best
+        Postcondition: Returns an array of top-ranked cars with low complaint severity
+      ----------------------------------------------------------------------------------
+    */
     @Get('top-best') 
     async getBestCars() {
         return this.complaintService.getBestCars(); 
     } 
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the worst-ranked cars based on complaint analysis
+        Route: GET /complaints/top-worst
+        Postcondition: Returns an array of worst-ranked cars with high complaint severity
+      ----------------------------------------------------------------------------------
+    */
     @Get('top-worst') 
     async getWorstCars() {
         return this.complaintService.getWorstCars(); 
     } 
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the worst model year based on complaints for a specific make and model
+        Route: GET /complaints/:make/:model/worst-year
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Postcondition: Returns the worst year with complaint count
+      ----------------------------------------------------------------------------------
+    */
     @Get(':make/:model/worst-year') 
     async getWorstYear( @Param('make') make: string, @Param('model') model: string ) { 
         return this.complaintService.getWorstYear(make, model); 
     } 
-            
+    
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves complaints grouped by year for a given make and model
+        Route: GET /complaints/:make/:model/complaints-by-year
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Postcondition: Returns an array of complaints grouped by year
+      ----------------------------------------------------------------------------------
+    */
     @Get(':make/:model/complaints-by-year') 
     async getComplaintsByYear( @Param('make') make: string, @Param('model') model: string ) {
         return this.complaintService.getComplaintsByYear(make, model); 
     } 
-            
+    
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves the worst problems reported for a specific make and model
+        Route: GET /complaints/:make/:model/worst-problems
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Postcondition: Returns an array of worst problems sorted by cost
+      ----------------------------------------------------------------------------------
+    */
     @Get(':make/:model/worst-problems') 
     async getWorstProblems( @Param('make') make: string, @Param('model') model: string ) {
         return this.complaintService.getWorstProblems(make, model); 
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves all complaints for a specific make and model
+        Route: GET /complaints/:make/:model
+        Param:
+          - make (string) -> Vehicle make
+          - model (string) -> Vehicle model
+        Postcondition: Returns an array of complaints related to the given make and model
+      ----------------------------------------------------------------------------------
+    */
     @Get(':make/:model')
     async getComplaintsByMakeModel( @Param('make') make: string, @Param('model') model: string) {
         return this.complaintService.getComplaintsByMakeModel(make, model);
     }
-        
+
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves a specific complaint entry by ID
+        Route: GET /complaints/:id
+        Param: id (number) -> Complaint ID
+        Postcondition: Returns complaint details if found, otherwise throws NotFoundException
+      ----------------------------------------------------------------------------------
+    */    
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<Complaint> {
         const Complaint = await this.complaintService.findOne(id);
@@ -80,6 +177,16 @@ export class ComplaintController {
         return Complaint;
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Updates complaint details
+        Route: PATCH /complaints/:id
+        Param:
+          - id (number) -> Complaint ID
+          - updateComplaintDto (UpdateComplaintDto) -> DTO containing updated complaint details
+        Postcondition: Returns updated complaint details if successful
+      ----------------------------------------------------------------------------------
+    */
     @Patch(':id')
     @UseGuards(JwtAuthGuard)
     async update(
@@ -98,6 +205,14 @@ export class ComplaintController {
         return this.complaintService.update(id, updateComplaintDto);
     }
 
+    /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Deletes a complaint entry
+        Route: DELETE /complaints/:id
+        Param: id (number) -> Complaint ID
+        Postcondition: Removes the complaint from the database
+      ----------------------------------------------------------------------------------
+    */
     @Delete(':id')
     delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
         return this.complaintService.delete(id);

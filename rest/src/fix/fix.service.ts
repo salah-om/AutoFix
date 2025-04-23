@@ -12,18 +12,48 @@ export class FixService {
         private readonly fixesRepository: Repository<Fix>,
       ) {}
     
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Creates a new fix entry
+        Param:
+          - createFixDto (CreateFixDto) -> DTO containing fix details
+        Return: Newly created fix entry
+      ----------------------------------------------------------------------------------
+      */
       create(createFixDto: CreateFixDto): Promise<Fix> {
         return this.fixesRepository.save(createFixDto);
       }
     
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves all fix records
+        Return: Array of fix records
+      ----------------------------------------------------------------------------------
+      */
       async findAll(): Promise<Fix[]> {
         return this.fixesRepository.find();
       }
     
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Retrieves a specific fix entry by ID
+        Param: id (number) -> Fix ID
+        Return: Fix entry if found, otherwise null
+      ----------------------------------------------------------------------------------
+      */
       async findOne(id: number): Promise<Fix | null> {
         return this.fixesRepository.findOneBy({ id: id });
       }
     
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Updates an existing fix record
+        Param:
+          - id (number) -> Fix ID
+          - updatedFix (UpdateFixDto) -> DTO containing updated fix details
+        Return: Updated fix entry if successful
+      ----------------------------------------------------------------------------------
+      */
       async update(id: number, updatedFix: UpdateFixDto): Promise<Fix>{
         const Fix = await this.fixesRepository.findOneBy({ id });
         if (!Fix) {
@@ -34,6 +64,13 @@ export class FixService {
         return this.fixesRepository.save(Fix);
       }
 
+      /*  
+      ----------------------------------------------------------------------------------
+        Purpose: Deletes a fix entry
+        Param: id (number) -> Fix ID
+        Postcondition: Fix entry is removed from the database
+      ----------------------------------------------------------------------------------
+      */
       async delete(id: number): Promise<void> {
         await this.fixesRepository.delete(id);
       }
