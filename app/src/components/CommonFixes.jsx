@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Menu from "./sidebars/Menu";
 import Footer from "./sidebars/Footer";
-import { getAllFixes } from "../services/FixService";
+import { getAllFixesByName } from "../services/FixService";
 
 const CommonFixes = () => {
   const [fixes, setFixes] = useState([]);
@@ -19,7 +19,7 @@ const CommonFixes = () => {
     */
   const fetchFixes = async () => {
     try {
-      const data = await getAllFixes();
+      const data = await getAllFixesByName();
       setFixes(data);
     } catch (error) {
       console.error("Error fetching fixes:", error);

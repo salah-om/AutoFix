@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fix } from './fix.entity';
 import { Repository } from 'typeorm';
-import { CreateFixDto } from './dto/create-fix.dto';
-import { UpdateFixDto } from './dto/update-fix.dto';
+import { CreateFixInput } from './dto/create-fix.input';
+import { UpdateFixInput } from './dto/update-fix.input';
 
 @Injectable()
 export class FixService {
@@ -16,12 +16,12 @@ export class FixService {
       ----------------------------------------------------------------------------------
         Purpose: Creates a new fix entry
         Param:
-          - createFixDto (CreateFixDto) -> DTO containing fix details
+          - CreateFixInput (CreateFixInput) -> DTO containing fix details
         Return: Newly created fix entry
       ----------------------------------------------------------------------------------
       */
-      create(createFixDto: CreateFixDto): Promise<Fix> {
-        return this.fixesRepository.save(createFixDto);
+      create(CreateFixInput: CreateFixInput): Promise<Fix> {
+        return this.fixesRepository.save(CreateFixInput);
       }
     
       /*  
@@ -50,11 +50,11 @@ export class FixService {
         Purpose: Updates an existing fix record
         Param:
           - id (number) -> Fix ID
-          - updatedFix (UpdateFixDto) -> DTO containing updated fix details
+          - updatedFix (UpdateFixInput) -> DTO containing updated fix details
         Return: Updated fix entry if successful
       ----------------------------------------------------------------------------------
       */
-      async update(id: number, updatedFix: UpdateFixDto): Promise<Fix>{
+      async update(id: number, updatedFix: UpdateFixInput): Promise<Fix>{
         const Fix = await this.fixesRepository.findOneBy({ id });
         if (!Fix) {
           throw new Error('Fix not found');

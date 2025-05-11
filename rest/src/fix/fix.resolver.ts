@@ -1,11 +1,12 @@
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException } from '@nestjs/common';
 import { FixService } from './fix.service';
 import { Fix } from './fix.entity';
-import { CreateFixDto } from './dto/create-fix.dto';
-import { UpdateFixDto } from './dto/update-fix.dto';
+import { CreateFixInput } from './dto/create-fix.input';
+import { UpdateFixInput } from './dto/update-fix.input';
 
-@Controller('fixes')
-export class FixController {
+@Resolver(() => Fix)
+export class FixResolver {
     constructor(private readonly fixService: FixService) {
     }
 
@@ -14,13 +15,13 @@ export class FixController {
         Purpose: Creates a new fix entry
         Route: POST /fixes
         Param:
-          - createFixDto (CreateFixDto) -> DTO containing fix details
+          - CreateFixInput (CreateFixInput) -> DTO containing fix details
         Postcondition: Returns the newly created fix entry
       ----------------------------------------------------------------------------------
     */
-    @Post()
-    create(@Body() createfixDto: CreateFixDto) {
-        return this.fixService.create(createfixDto);
+    @Mutation(() => Fix)
+    createFix(@Args('createFixInput') createFixInput: CreateFixInput): Promise<Fix> {
+        return this.fixService.create(createFixInput);
     }
 
     /*  
@@ -30,7 +31,7 @@ export class FixController {
         Postcondition: Returns an array of fix records
       ----------------------------------------------------------------------------------
     */
-    @Get()
+    @Query(() => [Fix], { name: 'fixes' })
     findAll(): Promise<Fix[]> {
         return this.fixService.findAll();
     }
@@ -43,8 +44,8 @@ export class FixController {
         Postcondition: Returns fix details if found, otherwise throws NotFoundException
       ----------------------------------------------------------------------------------
     */
-    @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number): Promise<Fix> {
+    @Query(() => Fix, { name: 'fix' })
+    async findOne(@Args('id', { type: () => Int } ) id: number): Promise<Fix> {
         const fix = await this.fixService.findOne(id);
         if(!fix){
             throw new NotFoundException('Fix not found');
@@ -58,13 +59,13 @@ export class FixController {
         Route: PATCH /fixes/:id
         Param:
           - id (number) -> Fix ID
-          - fixUpdate (UpdateFixDto) -> DTO containing updated fix details
+          - fixUpdate (UpdateFixInput) -> DTO containing updated fix details
         Postcondition: Returns updated fix entry if successful
       ----------------------------------------------------------------------------------
     */
-    @Patch(':id')
-    update(@Param('id', ParseIntPipe) id: number, @Body() fixUpdate: UpdateFixDto) {
-        return this.fixService.update(id, fixUpdate);
+    @Mutation(() => Fix)
+    updateFix(@Args('id', { type: () => Int } ) id: number, @Args('updateFixInput') updateFixInput: UpdateFixInput): Promise<Fix> {
+        return this.fixService.update(id, updateFixInput);
     }
 
     /*  
@@ -75,8 +76,9 @@ export class FixController {
         Postcondition: Removes the fix record from the database
       ----------------------------------------------------------------------------------
     */
-    @Delete(':id')
-    delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
-        return this.fixService.delete(id);
+    @Mutation(() => Boolean)
+    async deleteFix(@Args('id', { type: () => Int } ) id: number): Promise<boolean> {
+        await this.fixService.delete(id);
+        return true;
     }
 }

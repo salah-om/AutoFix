@@ -1,0 +1,33 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateFixInput {
+  description: String!
+  issue: String!
+  videourl: String!
+}
+
+type Fix {
+  description: String!
+  id: Int!
+  issue: String!
+  videourl: String!
+}
+
+type Mutation {
+  createFix(createFixInput: CreateFixInput!): Fix!
+  deleteFix(id: Int!): Boolean!
+  updateFix(id: Int!, updateFixInput: UpdateFixInput!): Fix!
+}
+
+type Query {
+  fix(id: Int!): Fix!
+  fixes: [Fix!]!
+}
+
+input UpdateFixInput {
+  description: String
+  issue: String
+  videourl: String
+}

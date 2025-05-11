@@ -1,4 +1,30 @@
-import http from "../http-common";
+import { gql } from '@apollo/client';
+import client from '../apolloClient.js';
+
+/*
+-----------------------------------------------------------------------
+  Purpose: Fetches all fixes by name from the database
+  Returns: Array of fix objects
+-----------------------------------------------------------------------
+*/
+export const getAllFixesByName = async () => {
+  try {
+    const { data } = await client.query({
+      query: gql`
+        query {
+          fixes {
+            id
+            issue
+          }
+        }
+      `,
+      fetchPolicy: "no-cache" // optional: avoids caching issues
+    });
+    return data.fixes;
+  } catch (error) {
+    console.error("Error fetching fixes:", error);
+  }
+};
 
 /*
 -----------------------------------------------------------------------
@@ -7,12 +33,24 @@ import http from "../http-common";
 -----------------------------------------------------------------------
 */
 export const getAllFixes = async () => {
-    try {
-        const response = await http.get("/fixes");
-        return response.data;
-    } catch (error) {
-        console.error("Error in getAllFixes:", error.response?.data || error.message);
-    }
+  try {
+    const { data } = await client.query({
+      query: gql`
+        query {
+          fixes {
+            id
+            issue
+            description
+            videourl
+          }
+        }
+      `,
+      fetchPolicy: "no-cache" // optional: avoids caching issues
+    });
+    return data.fixes;
+  } catch (error) {
+    console.error("Error fetching fixes:", error);
+  }
 };
 
 /*
@@ -24,11 +62,21 @@ export const getAllFixes = async () => {
 -----------------------------------------------------------------------
 */
 export const deleteFix = async (id) => {
-    try {
-        await http.delete(`/fixes/${id}`);
-    } catch (error) {
-        console.error(`Error in deleteFix for ID ${id}:`, error.response?.data || error.message);
-    }
+  try {
+    const { data } = await client.mutate({
+      mutation: gql`
+        mutation DeleteFix($id: Int!) {
+          deleteFix(id: $id)
+        }
+      `,
+      variables: {
+        id: Number(id)
+      }
+    });
+    return data.deleteFix;
+  } catch (error) {
+    console.error("Error deleting fix:", error);
+  }
 };
 
 /*
@@ -39,14 +87,27 @@ export const deleteFix = async (id) => {
   Returns: Fix JSON object
 -----------------------------------------------------------------------
 */
-export const getFixById = async (fixId) => {
-    try {
-        const response = await http.get(`/fixes/${fixId}`);
-        return response.data;
-    }catch(e) {
-        console.error("Error fetching fix by id", error);
-    }
+export const getFixById = async (id) => {
+  try {
+    const { data } = await client.query({
+      query: gql`
+        query Fix($id: Int!) {
+          fix(id: $id) {
+            id
+            issue
+            description
+            videourl
+          }
+        }
+      `,
+      variables: { id: Number(id) }
+    });
+    return data.fix;
+  } catch (error) {
+    console.error("Error fetching fix by id:", error);
+  }
 };
+
 
 /*
 -----------------------------------------------------------------------
@@ -57,13 +118,26 @@ export const getFixById = async (fixId) => {
 -----------------------------------------------------------------------
 */
 export const createFix = async (fixData) => {
-    try {
-        const response = await http.post('/fixes', fixData);
-        return response.data;
-    }catch(e) {
-        console.error("Error creating fix", error);
-    }
+  try {
+    const { data } = await client.mutate({
+      mutation: gql`
+        mutation CreateFix($input: CreateFixInput!) {
+          createFix(createFixInput: $input) {
+            id
+            issue
+          }
+        }
+      `,
+      variables: {
+        input: fixData
+      }
+    });
+    return data.createFix;
+  } catch (error) {
+    console.error("Error creating fix:", error);
+  }
 };
+
 
 /*
 -----------------------------------------------------------------------
@@ -74,11 +148,25 @@ export const createFix = async (fixData) => {
   Returns: Fix JSON object
 -----------------------------------------------------------------------
 */
-export const updateFix = async (fixId, fixData) => {
-    try {
-        const response = await http.patch(`/fixes/${fixId}`, fixData);
-        return response.data;
-    }catch(e) {
-        console.error("Error updating fix", error);
-    }
+export const updateFix = async (id, fixData) => {
+  try {
+    const { data } = await client.mutate({
+      mutation: gql`
+        mutation UpdateFix($id: Int!, $input: UpdateFixInput!) {
+          updateFix(id: $id, updateFixInput: $input) {
+            id
+            issue
+            description
+          }
+        }
+      `,
+      variables: {
+        id: Number(id),
+        input: fixData
+      }
+    });
+    return data.updateFix;
+  } catch (error) {
+    console.error("Error updating fix:", error);
+  }
 };
