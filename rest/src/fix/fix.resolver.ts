@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException } from '@nestjs/common';
+import { NotFoundException } from '@nestjs/common';
 import { FixService } from './fix.service';
 import { Fix } from './fix.entity';
 import { CreateFixInput } from './dto/create-fix.input';
