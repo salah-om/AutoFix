@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Patch, Delete, Param, Body, ParseIntPipe, NotFoundException, UploadedFile, UseInterceptors, Query } from '@nestjs/common';
-import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { Vehicle } from './vehicle.entity';
-import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { VehicleService } from './vehicle.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { CreateVehicleDto } from './dto/create-vehicle.dto';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 
 @Controller('vehicles')
 export class VehicleController {
