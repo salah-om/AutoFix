@@ -5,6 +5,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiResponse } from '@nestjs/swagger';
 
 @Controller('vehicles')
 export class VehicleController {
@@ -22,6 +23,13 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Post()
+    @ApiCreatedResponse({
+          description: 'Created vehicle object as response',
+          type: Vehicle
+        })
+    @ApiBadRequestResponse({
+          description: 'Vehicle could not be registered!'
+    })
     @UseInterceptors(
     FileInterceptor('imgurl', {
       storage: diskStorage({
@@ -51,6 +59,19 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Get()
+    @ApiOkResponse({
+          description: 'Fetched vehicle objects as response',
+          schema: {
+            example: [
+              { id : "1" , make: "Toyota", model: "Yaris", year: "2005", imgurl: "yaris.png"},
+              { id : "2" , make: "Ford", model: "Raptor", year: "2025", imgurl: "raptor.png"},
+              { id : "3" , make: "Honda", model: "Civic", year: "2015", imgurl: "civic.png"},
+            ]
+          }
+        })
+    @ApiBadRequestResponse({
+          description: 'Vehicles could not be fetched! Try again'
+        })
     async findAll(
         @Query('make') make?: string,
         @Query('model') model?: string,
@@ -67,6 +88,17 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Get('makes')
+    @ApiOkResponse({
+          description: 'Fetched distinct car brands',
+          schema: {
+            example: [
+              "Toyota", "Ford", "Honda", "Nissan"
+            ]
+          }
+        })
+    @ApiBadRequestResponse({
+          description: 'Car brands could not be fetched! Try again'
+        })
     async getDistinctMakes() {
         return this.vehicleService.getDistinctMakes();
     }
@@ -80,6 +112,17 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Get('models/:make')
+    @ApiOkResponse({
+          description: 'Fetched models for a car brand',
+          schema: {
+            example: [
+             "Civic","CRV"
+            ]
+          }
+        })
+    @ApiBadRequestResponse({
+          description: 'Car models for the brand could not be fetched! Try again'
+        })
     async getModelsByMake(@Param('make') make: string) {
         return this.vehicleService.getModelsByMake(make);
     }
@@ -95,6 +138,17 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Get('years/:make/:model')
+    @ApiOkResponse({
+          description: 'Fetched years for models',
+          schema: {
+            example: [
+             "2005","2011","2014","2025"
+            ]
+          }
+        })
+    @ApiBadRequestResponse({
+          description: 'Years for models for the brand could not be fetched! Try again'
+        })
     async getYearsByMakeAndModel(
         @Param('make') make: string, 
         @Param('model') model: string
@@ -111,6 +165,13 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Get(':id')
+    @ApiOkResponse({
+          description: 'Fetched vehicle object by id',
+          type: Vehicle
+        })
+        @ApiBadRequestResponse({
+          description: 'Vehicle not found! Try again'
+        })
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<Vehicle> {
         const Vehicle = await this.vehicleService.findOne(id);
         if(!Vehicle){
@@ -131,6 +192,13 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Patch(':id')
+    @ApiOkResponse({
+          description: 'Updated vehicle object by id',
+          type: Vehicle
+        })
+        @ApiBadRequestResponse({
+          description: 'Vehicle could not be updated. Try again'
+        })
     @UseInterceptors(
         FileInterceptor('imgurl', {
             storage: diskStorage({
@@ -162,6 +230,16 @@ export class VehicleController {
       ----------------------------------------------------------------------------------
     */
     @Delete(':id')
+    @ApiResponse({
+          status: 200,
+          description: 'Successfully deleted',
+          schema: {
+           example: { message: 'Deleted successfully' }
+        }
+        })
+        @ApiBadRequestResponse({
+          description: 'Vehicle could not be deleted.'
+        })
     delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
         return this.vehicleService.delete(id);
     }

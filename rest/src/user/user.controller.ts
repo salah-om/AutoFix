@@ -41,7 +41,13 @@ export class UserController {
     @Get()
     @ApiOkResponse({
       description: 'Fetched user objects as response',
-      type: User
+      schema: {
+            example: [
+              { id: "1", username: "salah112", email: "salah112@gmail.com", password: "32JHhsyuadGSd"},
+              { id: "2", username: "bob21", email: "bob21@gmail.com", password: "3dsafbrGSd"},
+              { id: "3", username: "eliet", email: "eliet@gmail.com", password: "854nfwdsac"}
+            ]
+          }
     })
     @ApiBadRequestResponse({
       description: 'Users could not be fetched! Try again'
