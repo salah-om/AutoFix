@@ -2,6 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/LoginDto';
 import { SignUpDto } from './dto/SignUpDto';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 
 @Controller('auth')
@@ -17,6 +18,26 @@ export class AuthController {
       ----------------------------------------------------------------------------------
     */
     @Post('login')
+    @ApiOkResponse({
+          description: 'User Logged in',
+          schema: {
+           example: { "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbGFoLm9tY0BnbWFpbC5jb20iLCJzdWIiOjQsImlhdCI6MTc0NzIyODEzOCwiZXhwIjoxNzQ3MjMxNzM4fQ.s62nDJEaCq1ulQxE8iumge8BLxmdwk4tTV-yJZX5xyE",
+                            "user": {
+                            "id": 4,
+                            "username": "salah",
+                            "email": "salah.omc@gmail.com",
+                            "role": "Visitor"
+    } }
+        }
+        })
+    @ApiUnauthorizedResponse({
+          description: 'Invalid Credentials. User could not login',
+          schema: {
+            example: { message: 'Invalid Credentials',
+                       error: "Unauthorized"
+             }
+          }
+    })
     async login(@Body() loginDto: LoginDto) {
         return this.authService.login(loginDto.email, loginDto.password);
     }
@@ -29,6 +50,15 @@ export class AuthController {
       ----------------------------------------------------------------------------------
     */
     @Post('signup')
+    @ApiOkResponse({
+          description: 'User Signed up',
+          schema: {
+           example: { "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhbGFoLm9tY0BnbWFpbC5jb20iLCJzdWIiOjQsImlhdCI6MTc0NzIyODEzOCwiZXhwIjoxNzQ3MjMxNzM4fQ.s62nDJEaCq1ulQxE8iumge8BLxmdwk4tTV-yJZX5xyE"}
+        }
+        })
+    @ApiBadRequestResponse({
+          description: 'User unable to sign up',
+    })
     async signUp(@Body() signUpDto: SignUpDto) {
         return this.authService.signUp(signUpDto);
     }

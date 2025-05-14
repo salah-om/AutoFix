@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiFoundResponse, ApiOkResponse, ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UserController {
@@ -19,6 +20,13 @@ export class UserController {
       ----------------------------------------------------------------------------------
     */
     @Post()
+    @ApiCreatedResponse({
+      description: 'Created user object as response',
+      type: User
+    })
+    @ApiBadRequestResponse({
+      description: 'User could not be registered! Try again'
+    })
     create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }
@@ -31,6 +39,13 @@ export class UserController {
       ----------------------------------------------------------------------------------
     */
     @Get()
+    @ApiOkResponse({
+      description: 'Fetched user objects as response',
+      type: User
+    })
+    @ApiBadRequestResponse({
+      description: 'Users could not be fetched! Try again'
+    })
     findAll(): Promise<User[]> {
         return this.userService.findAll();
     }
@@ -44,6 +59,13 @@ export class UserController {
       ----------------------------------------------------------------------------------
     */
     @Get(':id')
+    @ApiOkResponse({
+      description: 'Fetched user object by id',
+      type: User
+    })
+    @ApiBadRequestResponse({
+      description: 'User not found! Try again'
+    })
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
         const user = await this.userService.findOne(id);
         if(!user){
@@ -63,6 +85,13 @@ export class UserController {
       ----------------------------------------------------------------------------------
     */
     @Patch(':id')
+    @ApiOkResponse({
+      description: 'Updated user object by id',
+      type: User
+    })
+    @ApiBadRequestResponse({
+      description: 'User could not be updated. Try again'
+    })
     update(@Param('id', ParseIntPipe) id: number, @Body() userUpdate: UpdateUserDto) {
         return this.userService.update(id, userUpdate);
     }
@@ -76,6 +105,16 @@ export class UserController {
       ----------------------------------------------------------------------------------
     */
     @Delete(':id')
+    @ApiResponse({
+      status: 200,
+      description: 'Successfully deleted',
+      schema: {
+       example: { message: 'Deleted successfully' }
+    }
+    })
+    @ApiBadRequestResponse({
+      description: 'User could not be deleted.'
+    })
     delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
         return this.userService.delete(id);
     }
