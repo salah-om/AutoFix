@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { DashboardService } from './dashboard.service';
+import { ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('dashboard')
 export class DashboardController {
@@ -13,6 +14,9 @@ export class DashboardController {
       ----------------------------------------------------------------------------------
   */
   @Get('adminstats')
+  @ApiOkResponse({
+          description: 'Fetched admin stats'
+      })
   async getStats() {
     return this.dashboardService.getAdminDashboardStats();
   }
@@ -25,6 +29,9 @@ export class DashboardController {
       ----------------------------------------------------------------------------------
   */
   @Get('mechanicstats')
+  @ApiOkResponse({
+          description: 'Fetched mechanic stats'
+      })
   async getMechanicStats() {
     return this.dashboardService.getMechanicDashboardStats();
   }

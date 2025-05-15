@@ -4,6 +4,7 @@ import { Complaint } from './complaint.entity';
 import { ComplaintService } from './complaint.service';
 import { UpdateComplaintDto } from './dto/update-complaint.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('complaints')
 export class ComplaintController {
@@ -22,6 +23,13 @@ export class ComplaintController {
     */
     @UseGuards(JwtAuthGuard)
     @Post()
+    @ApiCreatedResponse({
+              description: 'Created complaint as response',
+              type: Complaint
+            })
+        @ApiBadRequestResponse({
+              description: 'Complaint could not be submitted!'
+        })
     create(@Request() req, @Body() createComplaintDto: CreateComplaintDto) {
         const userId = req.user?.id;
         console.log("User in controller:", req.user);
@@ -36,6 +44,13 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */
     @Get()
+    @ApiOkResponse({
+              description: 'Fetched complaints as response',
+              type: [UpdateComplaintDto]
+            })
+        @ApiBadRequestResponse({
+              description: 'Complaints could not be fetched! Try again'
+            })
     findAll(): Promise<Complaint[]> {
         return this.complaintService.findAll();
     }
@@ -49,6 +64,13 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */
     @Get('user')
+    @ApiOkResponse({
+              description: 'Fetched complaints submitted by a specific user',
+              type: [UpdateComplaintDto]
+            })
+        @ApiBadRequestResponse({
+              description: 'Complaints could not be found! Try again'
+            })
     @UseGuards(JwtAuthGuard)
     async getUserComplaints(@Req() req) {
         const userId = req.user.id; // Assuming you're using JWT with user ID
@@ -66,6 +88,13 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */
     @Get('search')
+     @ApiOkResponse({
+        description: 'Returned search results',
+        type: [Complaint]
+    })
+    @ApiBadRequestResponse({
+        description: 'Invalid search query'
+    })
     async searchComplaints(
     @Query('query') query: string,
     @Query('limit') limit: number = 20
@@ -83,7 +112,10 @@ export class ComplaintController {
         Postcondition: Returns an array of top-ranked cars with low complaint severity
       ----------------------------------------------------------------------------------
     */
-    @Get('top-best') 
+    @Get('top-best')
+     @ApiOkResponse({
+        description: 'Fetched top best vehicles based on complaint analysis'
+    })
     async getBestCars() {
         return this.complaintService.getBestCars(); 
     } 
@@ -95,7 +127,10 @@ export class ComplaintController {
         Postcondition: Returns an array of worst-ranked cars with high complaint severity
       ----------------------------------------------------------------------------------
     */
-    @Get('top-worst') 
+    @Get('top-worst')
+    @ApiOkResponse({
+        description: 'Fetched top worst vehicles based on complaint analysis'
+    })
     async getWorstCars() {
         return this.complaintService.getWorstCars(); 
     } 
@@ -110,7 +145,10 @@ export class ComplaintController {
         Postcondition: Returns the worst year with complaint count
       ----------------------------------------------------------------------------------
     */
-    @Get(':make/:model/worst-year') 
+    @Get(':make/:model/worst-year')
+    @ApiOkResponse({
+        description: 'Fetched worst year for a make and model'
+    })
     async getWorstYear( @Param('make') make: string, @Param('model') model: string ) { 
         return this.complaintService.getWorstYear(make, model); 
     } 
@@ -125,7 +163,10 @@ export class ComplaintController {
         Postcondition: Returns an array of complaints grouped by year
       ----------------------------------------------------------------------------------
     */
-    @Get(':make/:model/complaints-by-year') 
+    @Get(':make/:model/complaints-by-year')
+    @ApiOkResponse({
+        description: 'Fetched complaints grouped by year for the given make and model'
+    })
     async getComplaintsByYear( @Param('make') make: string, @Param('model') model: string ) {
         return this.complaintService.getComplaintsByYear(make, model); 
     } 
@@ -140,7 +181,10 @@ export class ComplaintController {
         Postcondition: Returns an array of worst problems sorted by cost
       ----------------------------------------------------------------------------------
     */
-    @Get(':make/:model/worst-problems') 
+    @Get(':make/:model/worst-problems')
+    @ApiOkResponse({
+        description: 'Fetched worst problems sorted by cost for a make and model'
+    })
     async getWorstProblems( @Param('make') make: string, @Param('model') model: string ) {
         return this.complaintService.getWorstProblems(make, model); 
     }
@@ -156,6 +200,9 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */
     @Get(':make/:model')
+    @ApiOkResponse({
+        description: 'Fetched complaints for a specific make and model'
+    })
     async getComplaintsByMakeModel( @Param('make') make: string, @Param('model') model: string) {
         return this.complaintService.getComplaintsByMakeModel(make, model);
     }
@@ -169,6 +216,13 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */    
     @Get(':id')
+    @ApiOkResponse({
+        description: 'Fetched specific complaint by ID',
+        type: Complaint
+    })
+    @ApiNotFoundResponse({
+        description: 'Complaint not found'
+    })
     async findOne(@Param('id', ParseIntPipe) id: number): Promise<Complaint> {
         const Complaint = await this.complaintService.findOne(id);
         if(!Complaint){
@@ -188,6 +242,16 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */
     @Patch(':id')
+    @ApiOkResponse({
+        description: 'Updated complaint successfully',
+        type: Complaint
+    })
+    @ApiUnauthorizedResponse({
+        description: 'User not authorized to update this complaint'
+    })
+    @ApiBadRequestResponse({
+        description: 'Invalid update request'
+    })
     @UseGuards(JwtAuthGuard)
     async update(
         @Param('id', ParseIntPipe) id: number,
@@ -214,6 +278,12 @@ export class ComplaintController {
       ----------------------------------------------------------------------------------
     */
     @Delete(':id')
+    @ApiOkResponse({
+        description: 'Complaint deleted successfully'
+    })
+    @ApiBadRequestResponse({
+        description: 'Complaint could not be deleted'
+    })
     delete(@Param('id', ParseIntPipe) id: number): Promise<void> {
         return this.complaintService.delete(id);
     }
