@@ -18,7 +18,7 @@ export const getAllFixesByName = async () => {
           }
         }
       `,
-      fetchPolicy: "no-cache" // optional: avoids caching issues
+      fetchPolicy: "no-cache" 
     });
     return data.fixes;
   } catch (error) {
@@ -45,7 +45,7 @@ export const getAllFixes = async () => {
           }
         }
       `,
-      fetchPolicy: "no-cache" // optional: avoids caching issues
+      fetchPolicy: "no-cache" 
     });
     return data.fixes;
   } catch (error) {
