@@ -860,9 +860,13 @@ p {
   gap: 20px;
 }
 
+.fixGuide-grid a {
+  text-decoration: none;
+}
+
 /* Card styles */
 .fixGuide-card {
-  background-color: currentColor;
+  background-color: #212529;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
