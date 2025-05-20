@@ -108,7 +108,15 @@ export const getFixById = async (id) => {
   }
 };
 
-
+export const getFixByIssue = async (issue) => {
+ 
+  const allFixes = await getAllFixesByName(); 
+  const targetFix = allFixes.find(f => f.issue === issue);
+  if (targetFix?.id) {
+    return getFixById(targetFix.id);
+  }
+  throw new Error(`Fix "${issue}" not found`);
+};
 /*
 -----------------------------------------------------------------------
   Purpose: Creates a fix
