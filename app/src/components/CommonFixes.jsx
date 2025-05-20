@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Menu from "./sidebars/Menu";
 import Footer from "./sidebars/Footer";
 import { getAllFixesByName } from "../services/FixService";
+import { Link } from "react-router-dom";
 
 const CommonFixes = () => {
   const [fixes, setFixes] = useState([]);
@@ -11,12 +12,6 @@ const CommonFixes = () => {
     fetchFixes();
   }, []);
 
-  /*
-    -----------------------------------------------------------------------
-      Purpose: Retrieves all fixes from the API
-      Postcondition: Updates component state with fixes data
-    -----------------------------------------------------------------------
-    */
   const fetchFixes = async () => {
     try {
       const data = await getAllFixesByName();
@@ -40,13 +35,15 @@ const CommonFixes = () => {
         
         <div className="fixGuide-grid">
           {fixes.map((fix, index) => (
-            <div key={index} className="fixGuide-card">
-              <h3 className="fixGuide-issue">{fix.issue}</h3>
-              <div className="fixGuide-hoverContent">
-                <span>Learn more</span>
-                <span className="fixGuide-arrow">→</span>
+            <Link to={`/common-fixes/${encodeURIComponent(fix.issue)}`} key={index}>
+              <div className="fixGuide-card">
+                <h3 className="fixGuide-issue">{fix.issue}</h3>
+                <div className="fixGuide-hoverContent">
+                  <span>Learn more</span>
+                  <span className="fixGuide-arrow">→</span>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
