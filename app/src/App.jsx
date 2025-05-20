@@ -21,6 +21,7 @@ import ModelSummary from './components/ModelSummary';
 import CommonFixes from './components/CommonFixes';
 import News from './components/News';
 import SearchComplaints from './components/SearchComplaints';
+import FixesDetails from './components/FixesDetails';
 
 function App() {
 
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/common-fixes" element={<CommonFixes />} />
+          </Route>
+          <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
+          <Route path="/common-fixes/:issue" element={<FixesDetails />} />
           </Route>
           <Route element={<PrivateRoute allowedRoles={["Visitor"]} />}>
           <Route path="/news" element={<News />} />
