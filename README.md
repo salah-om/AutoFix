@@ -12,14 +12,14 @@ A comprehensive web application that helps car owners track vehicle problems, di
 - [Deployment](#deployment)
 - [License](#license)
 
-## Features
-🚗 **Vehicle Problem Tracking** - Log and monitor recurring vehicle issues
-🔍 **Best & Worst Vehicle Models** - View the top-performing and most problematic car models based on user complaints
-⚠️ **Worst Problems & Repair Costs** - Identify common issues for each model, including estimated repair costs
-🔧▶️ **Repair Solutions Database** - Access common fixes for known problems and watch tutorial guides from the video player
-👨‍🔧 **Mechanic Connection Portal** - Connect with certified mechanics
-🔐 **Role-Based Access Control** - Different access levels for owners, mechanics, and admins
-📊 **Vehicle Analytics Dashboard** - Insights into common problems and repair trend
+## Features  
+🚗 **Vehicle Problem Tracking** - Log and monitor recurring vehicle issues  
+🔍 **Best & Worst Vehicle Models** - View the top-performing and most problematic car models based on user complaints  
+⚠️ **Worst Problems & Repair Costs** - Identify common issues for each model, including estimated repair costs  
+🔧▶️ **Repair Solutions Database** - Access common fixes for known problems and watch tutorial guides from the video player  
+👨‍🔧 **Mechanic Connection Portal** - Connect with certified mechanics  
+🔐 **Role-Based Access Control** - Different access levels for owners, mechanics, and admins  
+📊 **Vehicle Analytics Dashboard** - Insights into common problems and repair trends  
 
 
 ## Getting Started
