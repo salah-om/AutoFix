@@ -12,9 +12,11 @@ A comprehensive web application that helps car owners track vehicle problems, di
 - [Deployment](#deployment)
 - [License](#license)
 
+## Documentation also through Swagger
+
 ## Features
 🚗 **Vehicle Problem Tracking** - Log and monitor recurring vehicle issues  
-🔧 **Repair Solutions Database** - Access common fixes for known problems  
+🔧 **Repair Solutions Database** - Learn common fixes for problems from tutorials with video player  
 👨‍🔧 **Mechanic Connection Portal** - Connect with certified mechanics  
 🔐 **Role-Based Access Control** - Different access levels for owners, mechanics, and admins  
 📊 **Vehicle Analytics Dashboard** - Insights into common problems and repair trends
@@ -27,138 +29,133 @@ A comprehensive web application that helps car owners track vehicle problems, di
 - npm/yarn
 
 ### Installation
-```bash
+```
 git clone https://github.com/salah-om/autofix.git
 cd autofix-api
 npm install
+```
 
-### API Documentation
+## **Backend Routes**
 
-Authentication
-Login
+### **Authentication**
 
-POST /auth/login
+| Method | Endpoint         | Description           | Status Codes     |
+|--------|------------------|-----------------------|------------------|
+| POST   | `/auth/login`    | User login            | 200, 400, 401    |
+| POST   | `/auth/signup`   | Create new account    | 201, 400         |
 
-json
-{
-  "email": "user@example.com",
-  "password": "yourpassword"
-}
+---
 
+### **Complaints**
 
-Signup
-POST /auth/signup
+| Method | Endpoint                                  | Description                                        | Status Codes |
+|--------|-------------------------------------------|----------------------------------------------------|--------------|
+| GET    | `/complaints`                             | Get all complaints                                 | 200          |
+| POST   | `/complaints`                             | Submit a complaint                                 | 201, 400     |
+| GET    | `/complaints/:make/:model`                | Get complaints for a specific make and model       | 200, 404     |
+| GET    | `/complaints/top-worst`                   | Get top 3 most problematic car models              | 200          |
 
-json
-{
-  "username": "newuser",
-  "email": "new@example.com",
-  "password": "securepassword"
-}
+---
 
-### Core Endpoints
+### **Vehicles**
 
-Method	Endpoint	Description
-GET	/complaints	List all reported problems
-POST	/complaints	Submit new vehicle complaint
-GET	/vehicles	List all vehicles in system
-POST	/fixes		Add new repair solution
+| Method | Endpoint                        | Description                             | Status Codes |
+|--------|----------------------------------|-----------------------------------------|--------------|
+| GET    | `/vehicles`                     | List all vehicles                       | 200          |
+| GET    | `/vehicles/makes`              | Get all available car makes             | 200          |
+| GET    | `/vehicles/models/:make`       | Get all models for a given make         | 200, 404     |
+| POST   | `/vehicles`                    | Add a new vehicle with optional image   | 201, 400     |
 
-Complaints Management
+---
 
-GET /complaints - Get all reported problems
-POST /complaints - Submit new vehicle complaint
-GET /complaints/:make/:model - Get complaints for specific vehicle
-GET /complaints/top-worst - Get top 3 worst car models by complaint volume
+### Fixes (GraphQL)
 
-Vehicle Information
+| Operation Type | Name              | Description                                | Returns           |
+|----------------|-------------------|--------------------------------------------|-------------------|
+| Query          | fixes             | Get a list of all fixes                    | [Fix]             |
+| Query          | fix(id: ID!)      | Get details of a specific fix              | Fix or null       |
+| Mutation       | createFix         | Add a new fix                              | Fix               |
+| Mutation       | updateFix         | Update an existing fix                     | Fix               |
+| Mutation       | deleteFix         | Delete a fix by ID                         | Boolean           |
 
-GET /vehicles/makes - Get all vehicle makes
-GET /vehicles/models/:make - Get models for specific make
-POST /vehicles - Add new vehicle (supports image upload)
+---
 
-Fixes 
+### **Users**
 
-GET /fixes - Get all documented fixes
-POST /fixes - Add new repair solution
-GET /fixes/:id - Get specific fix details
+| Method | Endpoint         | Description                  | Status Codes |
+|--------|------------------|------------------------------|--------------|
+| GET    | `/users`         | Get all registered users     | 200          |
+| PATCH  | `/users/:id`     | Update user profile info     | 200, 400     |
+| DELETE | `/users/:id`     | Remove a user from the system| 200, 404     |
 
-User Management
+---
 
-GET /users - Get all users (admin only)
-PATCH /users/:id - Update user profile
-DELETE /users/:id - Delete user account
+### **Dashboard Analytics**
 
-Dashboard Analytics
+| Method | Endpoint                    | Description                           | Status Codes |
+|--------|-----------------------------|---------------------------------------|--------------|
+| GET    | `/dashboard/adminstats`     | View site-wide admin metrics          | 200          |
+| GET    | `/dashboard/mechanicstats`  | View mechanic performance stats       | 200          |
 
-GET /dashboard/adminstats - Admin performance metrics
-GET /dashboard/mechanicstats - Mechanic workload statistics
+---
 
 ### Database Schema
 
-### Core Tables
-
 Users
-
-sql
+```
 CREATE TABLE users (
-  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
   role ENUM('owner', 'mechanic', 'admin') DEFAULT 'owner'
 );
-
+```
 Vehicles
-
-sql
+```
 CREATE TABLE vehicles (
-  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   make VARCHAR(255) NOT NULL,
   model VARCHAR(255) NOT NULL,
   year VARCHAR(4),
   imgurl VARCHAR(255)
 );
-
+```
 Complaints
-
-sql
+```
 CREATE TABLE complaints (
-  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   issue VARCHAR(255) NOT NULL,
   description TEXT,
   cost DECIMAL(10,2),
-  user_id INT(11),
-  vehicle_id INT(11),
+  user_id INT,
+  vehicle_id INT,
   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (vehicle_id) REFERENCES vehicles(id)
 );
-
+```
 Fixes
-
-sql
+```
 CREATE TABLE fixes (
-  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  id INT AUTO_INCREMENT PRIMARY KEY,
   issue VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
   videourl VARCHAR(255),
-  complaint_id INT(11) UNIQUE,
+  complaint_id INT UNIQUE,
   FOREIGN KEY (complaint_id) REFERENCES complaints(id)
 );
+```
+Entity Relationships
 
-Relationships
-
-Users → Complaints (One-to-Many)
-
-Vehicles → Complaints (One-to-Many)
-
-Complaints → Fixes (One-to-One)
+	•	Users → Complaints: One-to-Many
+	•	Vehicles → Complaints: One-to-Many
+	•	Complaints → Fixes: One-to-One
 
 ### Environment Configuration
 
 Create .env file in root directory:
-
+```
 ini
 DB_HOST=localhost
 DB_USER=root
@@ -166,14 +163,14 @@ DB_PASSWORD=yourpassword
 DB_NAME=autofix
 JWT_SECRET=your_jwt_secret
 PORT=3000
-
+```
 ### Testing
+```
 bash
 npm test
-
+```
 ### Deployment
 The user will be prompted with a login screen upon a successful login the website will detect your rank and take to you to your corresponding inteface.
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
-
