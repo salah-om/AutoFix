@@ -173,6 +173,6 @@ npm test
 The user will be prompted with a login screen upon a successful login the website will detect your rank and take to you to your corresponding inteface.
 
 ## Images
-![image alt](https://github.com/salah-om/AutoFix/blob/main/login.png?raw=true)
+![image alt](https://github.com/salah-om/AutoFix/blob/hidden-assets/login.png?raw=true)
 ## License
 This project is licensed under the [MIT License](LICENSE).
