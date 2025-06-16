@@ -174,5 +174,7 @@ The user will be prompted with a login screen upon a successful login the websit
 
 ## Images
 ![image alt](https://github.com/salah-om/AutoFix/blob/hidden-assets/login.png?raw=true)
+![Screenshot 2025-06-16 114830](https://github.com/user-attachments/assets/7675dd21-1297-4b41-bea7-2d6093b027ca)
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
