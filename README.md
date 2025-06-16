@@ -175,6 +175,16 @@ The user will be prompted with a login screen upon a successful login the websit
 ## Images
 ![image alt](https://github.com/salah-om/AutoFix/blob/hidden-assets/login.png?raw=true)
 ![Screenshot 2025-06-16 114830](https://github.com/user-attachments/assets/7675dd21-1297-4b41-bea7-2d6093b027ca)
+![Screenshot 2025-06-16 115334](https://github.com/user-attachments/assets/709cdad4-07aa-40ec-b8bb-523191daf18c)
+![Screenshot 2025-06-16 115500](https://github.com/user-attachments/assets/7c415893-b6ff-4b3b-882c-293de61d7a2e)
+![Screenshot 2025-06-16 115526](https://github.com/user-attachments/assets/15caa58b-40a0-4fa5-b1a9-17fd3f3eb052)
+![Screenshot 2025-06-16 115613](https://github.com/user-attachments/assets/a6206225-d77e-4069-9203-a431fb7646b8)
+![Screenshot 2025-06-16 115643](https://github.com/user-attachments/assets/b3b34de1-2c2b-4a29-9dfd-3d72e7c8573d)
+![Screenshot 2025-06-16 115704](https://github.com/user-attachments/assets/229b47f1-6b47-4377-84a8-bc16ee04bfdc)
+![Screenshot 2025-06-16 115719](https://github.com/user-attachments/assets/42758767-115f-4c79-ad12-23581032954f)
+![Screenshot 2025-06-16 115812](https://github.com/user-attachments/assets/22c79f31-f577-4056-b1b4-6c99d4c9c033)
+![Screenshot 2025-06-16 115852](https://github.com/user-attachments/assets/e90c68d3-8aee-4590-99b6-2598c94d6438)
+![Screenshot 2025-06-16 120012](https://github.com/user-attachments/assets/bf20d3d1-913a-4289-b629-bc4a48fef7ac)
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
