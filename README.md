@@ -1,4 +1,4 @@
-# AutoFix - Vehicle Complaints & Repair Assistance System
+# 🔧AutoFix - Vehicle Complaints & Repair Assistance System 🚗
 
 A comprehensive web application that helps car owners track vehicle problems, discover common fixes, and connect with mechanics.
 
